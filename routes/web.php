@@ -1,0 +1,107 @@
+<?php
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FranchiseController;
+use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FranchiseController as AdminFranchiseController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\InquiryController as AdminInquiryController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FranchiseImageController;
+use Illuminate\Support\Facades\Route;
+
+// Public Routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/franchises', [FranchiseController::class, 'index'])->name('franchises.index');
+Route::get('/franchises/{slug}', [FranchiseController::class, 'show'])->name('franchises.show');
+
+// Inquiry Route
+Route::post('/inquiries', [InquiryController::class, 'store'])->name('inquiries.store');
+
+// Auth Routes (Breeze)
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // User Account Routes
+    Route::get('/account', [AccountController::class, 'index'])->name('account.index');
+    Route::get('/account/inquiries', [AccountController::class, 'inquiries'])->name('account.inquiries');
+    Route::get('/account/orders', [AccountController::class, 'orders'])->name('account.orders');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    // Dashboard
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+    // Franchises Management
+    Route::get('/franchises', [AdminFranchiseController::class, 'index'])->name('admin.franchises.index');
+    Route::get('/franchises/create', [AdminFranchiseController::class, 'create'])->name('admin.franchises.create');
+    Route::post('/franchises', [AdminFranchiseController::class, 'store'])->name('admin.franchises.store');
+    Route::get('/franchises/{id}/edit', [AdminFranchiseController::class, 'edit'])->name('admin.franchises.edit');
+    Route::put('/franchises/{id}', [AdminFranchiseController::class, 'update'])->name('admin.franchises.update');
+    Route::delete('/franchises/{id}', [AdminFranchiseController::class, 'destroy'])->name('admin.franchises.destroy');
+
+    // Franchise Images Management
+    Route::delete('/franchise-images/{id}', [FranchiseImageController::class, 'destroy'])
+        ->name('admin.franchise-images.destroy');
+
+    // Categories Management
+    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
+    // Inquiries Management
+    Route::get('/inquiries', [AdminInquiryController::class, 'index'])->name('admin.inquiries.index');
+    Route::get('/inquiries/{id}', [AdminInquiryController::class, 'show'])->name('admin.inquiries.show');
+    Route::put('/inquiries/{id}', [AdminInquiryController::class, 'update'])->name('admin.inquiries.update');
+
+    // Users Management
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+
+    // Debug routes
+Route::get('/debug-franchises', function () {
+    echo "<h1>Franchise Database Debug</h1>";
+    
+    try {
+        // Database connection tekshirish
+        \DB::connection()->getPdo();
+        echo "✅ Database connection: OK<br>";
+        
+        // Franchise lar soni
+        $franchiseCount = \App\Models\Franchise::count();
+        echo "✅ Total franchises: " . $franchiseCount . "<br>";
+        
+        // Barcha franchise larni ko'rsatish
+        $franchises = \App\Models\Franchise::with('category', 'images', 'creator')->get();
+        
+        echo "<h2>All Franchises:</h2>";
+        foreach ($franchises as $franchise) {
+            echo "<div style='border: 1px solid #ccc; padding: 10px; margin: 10px;'>";
+            echo "<h3>{$franchise->title}</h3>";
+            echo "<p><strong>Slug:</strong> {$franchise->slug}</p>";
+            echo "<p><strong>Status:</strong> {$franchise->status}</p>";
+            echo "<p><strong>Category:</strong> " . ($franchise->category ? $franchise->category->name : 'NO CATEGORY') . "</p>";
+            echo "<p><strong>Images:</strong> " . $franchise->images->count() . "</p>";
+            echo "<p><strong>Creator:</strong> " . ($franchise->creator ? $franchise->creator->name : 'NO CREATOR') . "</p>";
+            echo "<p><strong>URL:</strong> <a href='/franchises/{$franchise->slug}' target='_blank'>/franchises/{$franchise->slug}</a></p>";
+            echo "</div>";
+        }
+        
+    } catch (\Exception $e) {
+        echo "❌ Error: " . $e->getMessage();
+    }
+});
+});
+
+require __DIR__ . '/auth.php';
