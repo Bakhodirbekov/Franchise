@@ -98,3 +98,7 @@ git clone <repository>
 cd franchise-shop
 composer install
 npm install
+php artisan storage:link
+php artisan key:generate
+npm run dev
+php artisan serve

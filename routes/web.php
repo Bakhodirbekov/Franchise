@@ -18,8 +18,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/franchises', [FranchiseController::class, 'index'])->name('franchises.index');
 Route::get('/franchises/{slug}', [FranchiseController::class, 'show'])->name('franchises.show');
 
-// Inquiry Route
-Route::post('/inquiries', [InquiryController::class, 'store'])->name('inquiries.store');
+// Inquiry Route (with rate limiting)
+Route::post('/inquiries', [InquiryController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('inquiries.store');
 
 // Auth Routes (Breeze)
 Route::get('/dashboard', function () {
@@ -68,40 +70,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // Users Management
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-
-    // Debug routes
-Route::get('/debug-franchises', function () {
-    echo "<h1>Franchise Database Debug</h1>";
-    
-    try {
-        // Database connection tekshirish
-        \DB::connection()->getPdo();
-        echo "✅ Database connection: OK<br>";
-        
-        // Franchise lar soni
-        $franchiseCount = \App\Models\Franchise::count();
-        echo "✅ Total franchises: " . $franchiseCount . "<br>";
-        
-        // Barcha franchise larni ko'rsatish
-        $franchises = \App\Models\Franchise::with('category', 'images', 'creator')->get();
-        
-        echo "<h2>All Franchises:</h2>";
-        foreach ($franchises as $franchise) {
-            echo "<div style='border: 1px solid #ccc; padding: 10px; margin: 10px;'>";
-            echo "<h3>{$franchise->title}</h3>";
-            echo "<p><strong>Slug:</strong> {$franchise->slug}</p>";
-            echo "<p><strong>Status:</strong> {$franchise->status}</p>";
-            echo "<p><strong>Category:</strong> " . ($franchise->category ? $franchise->category->name : 'NO CATEGORY') . "</p>";
-            echo "<p><strong>Images:</strong> " . $franchise->images->count() . "</p>";
-            echo "<p><strong>Creator:</strong> " . ($franchise->creator ? $franchise->creator->name : 'NO CREATOR') . "</p>";
-            echo "<p><strong>URL:</strong> <a href='/franchises/{$franchise->slug}' target='_blank'>/franchises/{$franchise->slug}</a></p>";
-            echo "</div>";
-        }
-        
-    } catch (\Exception $e) {
-        echo "❌ Error: " . $e->getMessage();
-    }
-});
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 require __DIR__ . '/auth.php';

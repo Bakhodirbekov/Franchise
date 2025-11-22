@@ -44,7 +44,8 @@ class Franchise extends Model
         });
 
         static::updating(function ($franchise) {
-            if ($franchise->isDirty('title') && empty($franchise->slug)) {
+            // Regenerate slug only if title changed
+            if ($franchise->isDirty('title')) {
                 $franchise->slug = $franchise->generateUniqueSlug($franchise->title);
             }
         });
@@ -57,7 +58,12 @@ class Franchise extends Model
         $originalSlug = $slug;
         $counter = 1;
 
-        while (static::where('slug', $slug)->exists()) {
+        // Check for existing slugs, excluding current record if updating
+        while (static::where('slug', $slug)
+            ->when($this->exists, function ($query) {
+                return $query->where('id', '!=', $this->id);
+            })
+            ->exists()) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
         }

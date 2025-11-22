@@ -1,73 +1,220 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('layouts.guest')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Phone -->
-        <div class="mt-4">
-            <x-input-label for="phone" :value="__('Phone')" />
-            <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone')" required autocomplete="tel" />
-            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-        </div>
-
-        <!-- Company -->
-        <div class="mt-4">
-            <x-input-label for="company" :value="__('Company (Optional)')" />
-            <x-text-input id="company" class="block mt-1 w-full" type="text" name="company" :value="old('company')" autocomplete="organization" />
-            <x-input-error :messages="$errors->get('company')" class="mt-2" />
-        </div>
-
-        <!-- Address -->
-        <div class="mt-4">
-            <x-input-label for="address" :value="__('Address (Optional)')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" autocomplete="street-address" />
-            <x-input-error :messages="$errors->get('address')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+@section('content')
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl w-full">
+        <!-- Logo & Title -->
+        <div class="text-center mb-8">
+            <a href="{{ route('home') }}" class="inline-block mb-6">
+                <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                    <i class="bi bi-shop text-white text-3xl"></i>
+                </div>
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h2>
+            <p class="text-gray-600">Join us and discover amazing franchise opportunities</p>
         </div>
-    </form>
-</x-guest-layout>
+
+        <!-- Register Card -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+            <div class="p-8">
+                <form method="POST" action="{{ route('register') }}" class="space-y-6">
+                    @csrf
+
+                    <!-- Two Column Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="bi bi-person mr-2 text-blue-600"></i>Full Name
+                            </label>
+                            <input id="name" 
+                                   type="text" 
+                                   name="name" 
+                                   value="{{ old('name') }}" 
+                                   required 
+                                   autofocus 
+                                   autocomplete="name"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('name') border-red-500 @enderror"
+                                   placeholder="John Doe">
+                            @error('name')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="bi bi-telephone mr-2 text-blue-600"></i>Phone Number
+                            </label>
+                            <input id="phone" 
+                                   type="tel" 
+                                   name="phone" 
+                                   value="{{ old('phone') }}" 
+                                   required 
+                                   autocomplete="tel"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('phone') border-red-500 @enderror"
+                                   placeholder="+1 (555) 123-4567">
+                            @error('phone')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div>
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="bi bi-envelope mr-2 text-blue-600"></i>Email Address
+                        </label>
+                        <input id="email" 
+                               type="email" 
+                               name="email" 
+                               value="{{ old('email') }}" 
+                               required 
+                               autocomplete="username"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('email') border-red-500 @enderror"
+                               placeholder="your@email.com">
+                        @error('email')
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Two Column Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Company (Optional) -->
+                        <div>
+                            <label for="company" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="bi bi-building mr-2 text-gray-400"></i>Company <span class="text-gray-400 text-xs">(Optional)</span>
+                            </label>
+                            <input id="company" 
+                                   type="text" 
+                                   name="company" 
+                                   value="{{ old('company') }}" 
+                                   autocomplete="organization"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="Your Company">
+                        </div>
+
+                        <!-- Address (Optional) -->
+                        <div>
+                            <label for="address" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="bi bi-geo-alt mr-2 text-gray-400"></i>Address <span class="text-gray-400 text-xs">(Optional)</span>
+                            </label>
+                            <input id="address" 
+                                   type="text" 
+                                   name="address" 
+                                   value="{{ old('address') }}" 
+                                   autocomplete="street-address"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="City, Country">
+                        </div>
+                    </div>
+
+                    <!-- Two Column Grid for Passwords -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Password -->
+                        <div>
+                            <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="bi bi-lock mr-2 text-blue-600"></i>Password
+                            </label>
+                            <div class="relative">
+                                <input id="password" 
+                                       type="password" 
+                                       name="password" 
+                                       required 
+                                       autocomplete="new-password"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('password') border-red-500 @enderror"
+                                       placeholder="••••••••">
+                                <button type="button" onclick="togglePassword('password', 'toggleIcon1')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i id="toggleIcon1" class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div>
+                            <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="bi bi-lock-fill mr-2 text-blue-600"></i>Confirm Password
+                            </label>
+                            <div class="relative">
+                                <input id="password_confirmation" 
+                                       type="password" 
+                                       name="password_confirmation" 
+                                       required 
+                                       autocomplete="new-password"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                       placeholder="••••••••">
+                                <button type="button" onclick="togglePassword('password_confirmation', 'toggleIcon2')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i id="toggleIcon2" class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password Requirements -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <p class="text-sm text-blue-800 font-medium mb-2">
+                            <i class="bi bi-info-circle mr-2"></i>Password Requirements:
+                        </p>
+                        <ul class="text-xs text-blue-700 space-y-1 ml-6">
+                            <li>• At least 8 characters long</li>
+                            <li>• Include uppercase and lowercase letters</li>
+                            <li>• Include at least one number</li>
+                        </ul>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <i class="bi bi-person-plus mr-2"></i>Create Account
+                    </button>
+                </form>
+            </div>
+
+            <!-- Login Link -->
+            <div class="px-8 py-6 bg-gray-50 border-t border-gray-200">
+                <p class="text-center text-sm text-gray-600">
+                    Already have an account?
+                    <a href="{{ route('login') }}" class="font-semibold text-blue-600 hover:text-blue-700 transition duration-200">
+                        Sign In <i class="bi bi-arrow-right ml-1"></i>
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center mt-6">
+            <a href="{{ route('home') }}" class="text-sm text-gray-600 hover:text-gray-900 transition duration-200">
+                <i class="bi bi-arrow-left mr-2"></i>Back to Homepage
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePassword(inputId, iconId) {
+    const passwordInput = document.getElementById(inputId);
+    const toggleIcon = document.getElementById(iconId);
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('bi-eye');
+        toggleIcon.classList.add('bi-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('bi-eye-slash');
+        toggleIcon.classList.add('bi-eye');
+    }
+}
+</script>
+@endsection

@@ -11,7 +11,14 @@ class InquiryController extends Controller
     public function store(StoreInquiryRequest $request)
     {
         try {
-            $inquiry = Inquiry::create($request->validated());
+            $data = $request->validated();
+            
+            // Automatically set user_id if authenticated
+            if (auth()->check()) {
+                $data['user_id'] = auth()->id();
+            }
+            
+            $inquiry = Inquiry::create($data);
             
             return back()->with('success', 'Your inquiry has been submitted successfully! We will contact you soon.');
         } catch (\Exception $e) {

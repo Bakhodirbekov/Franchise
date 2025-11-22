@@ -22,15 +22,36 @@ class Category extends Model
 
         static::creating(function ($category) {
             if (empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
+                $category->slug = $category->generateUniqueSlug($category->name);
             }
         });
 
         static::updating(function ($category) {
-            if ($category->isDirty('name') && empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
+            // Regenerate slug only if name changed
+            if ($category->isDirty('name')) {
+                $category->slug = $category->generateUniqueSlug($category->name);
             }
         });
+    }
+
+    // Generate unique slug
+    public function generateUniqueSlug($name)
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        // Check for existing slugs, excluding current record if updating
+        while (static::where('slug', $slug)
+            ->when($this->exists, function ($query) {
+                return $query->where('id', '!=', $this->id);
+            })
+            ->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 
     public function franchises()

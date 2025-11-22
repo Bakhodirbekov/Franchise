@@ -44,6 +44,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('home')->with('success', 'Welcome to FranchiseShop! Your account has been created successfully.');
     }
 }

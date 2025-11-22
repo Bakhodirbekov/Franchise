@@ -83,8 +83,8 @@
                     @endauth
                 </div>
 
-                <!-- Auth Links -->
-                <div class="flex items-center space-x-4">
+                <!-- Desktop Auth Links -->
+                <div class="hidden md:flex items-center space-x-4">
                     @auth
                         <div class="relative group">
                             <button
@@ -93,7 +93,7 @@
                                     class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
                                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                 </div>
-                                <span class="hidden md:block font-medium">{{ auth()->user()->name }}</span>
+                                <span class="font-medium">{{ auth()->user()->name }}</span>
                                 <i class="bi bi-chevron-down text-xs"></i>
                             </button>
 
@@ -135,9 +135,83 @@
                         </a>
                     @endauth
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" type="button" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <i class="bi bi-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-4 py-4 space-y-3">
+                <a href="{{ route('home') }}"
+                    class="block py-2 text-gray-700 hover:text-blue-600 font-medium transition duration-200 {{ request()->routeIs('home') ? 'text-blue-600' : '' }}">
+                    <i class="bi bi-house mr-2"></i>Home
+                </a>
+                <a href="{{ route('franchises.index') }}"
+                    class="block py-2 text-gray-700 hover:text-blue-600 font-medium transition duration-200 {{ request()->routeIs('franchises.*') ? 'text-blue-600' : '' }}">
+                    <i class="bi bi-shop mr-2"></i>Franchises
+                </a>
+                @auth
+                    <a href="{{ route('account.index') }}"
+                        class="block py-2 text-gray-700 hover:text-blue-600 font-medium transition duration-200 {{ request()->routeIs('account.*') ? 'text-blue-600' : '' }}">
+                        <i class="bi bi-briefcase mr-2"></i>My Account
+                    </a>
+                    <a href="{{ route('profile.edit') }}"
+                        class="block py-2 text-gray-700 hover:text-blue-600 font-medium transition duration-200">
+                        <i class="bi bi-person mr-2"></i>Profile Settings
+                    </a>
+                    @if (auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="block py-2 text-gray-700 hover:text-blue-600 font-medium transition duration-200 {{ request()->routeIs('admin.*') ? 'text-blue-600' : '' }}">
+                            <i class="bi bi-speedometer2 mr-2"></i>Admin Dashboard
+                        </a>
+                    @endif
+                    <div class="border-t border-gray-200 pt-3 mt-3">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium">
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">{{ auth()->user()->name }}</p>
+                                <p class="text-sm text-gray-500">{{ auth()->user()->email }}</p>
+                            </div>
+                        </div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full bg-red-50 text-red-600 py-2 px-4 rounded-lg font-medium hover:bg-red-100 transition duration-200">
+                                <i class="bi bi-box-arrow-right mr-2"></i>Log Out
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <div class="space-y-2 pt-3 border-t border-gray-200">
+                        <a href="{{ route('login') }}"
+                            class="block w-full text-center bg-gray-100 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-200 transition duration-200">
+                            Log in
+                        </a>
+                        <a href="{{ route('register') }}"
+                            class="block w-full text-center bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition duration-200">
+                            Sign up
+                        </a>
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
 
     <!-- Page Content -->
     <main class="pt-16 min-h-screen">

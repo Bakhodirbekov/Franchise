@@ -7,6 +7,7 @@ use App\Models\Franchise;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FranchiseController extends Controller
 {
@@ -45,17 +46,6 @@ class FranchiseController extends Controller
         ]);
 
         try {
-            // Generate unique slug
-            $slug = \Str::slug($request->title);
-            $originalSlug = $slug;
-            $counter = 1;
-
-            // Check if slug already exists and make it unique
-            while (Franchise::where('slug', $slug)->exists()) {
-                $slug = $originalSlug . '-' . $counter;
-                $counter++;
-            }
-
             // Handle requirements
             $requirements = null;
             if ($request->requirements) {
@@ -63,10 +53,9 @@ class FranchiseController extends Controller
                 $requirements = array_filter($requirementsArray); // Remove empty values
             }
 
-            // Create franchise
+            // Create franchise (slug will be auto-generated in model)
             $franchise = Franchise::create([
                 'title' => $request->title,
-                'slug' => $slug,
                 'category_id' => $request->category_id,
                 'short_description' => $request->short_description,
                 'description' => $request->description,
@@ -128,19 +117,6 @@ class FranchiseController extends Controller
         ]);
 
         try {
-            // Generate slug if title changed
-            $slug = $franchise->slug;
-            if ($franchise->title !== $request->title) {
-                $slug = \Str::slug($request->title);
-                $originalSlug = $slug;
-                $counter = 1;
-
-                while (Franchise::where('slug', $slug)->where('id', '!=', $franchise->id)->exists()) {
-                    $slug = $originalSlug . '-' . $counter;
-                    $counter++;
-                }
-            }
-
             // Handle requirements
             $requirements = null;
             if ($request->requirements) {
@@ -148,10 +124,9 @@ class FranchiseController extends Controller
                 $requirements = array_filter($requirementsArray);
             }
 
-            // Update franchise
+            // Update franchise (slug will be auto-regenerated if title changed)
             $franchise->update([
                 'title' => $request->title,
-                'slug' => $slug,
                 'category_id' => $request->category_id,
                 'short_description' => $request->short_description,
                 'description' => $request->description,

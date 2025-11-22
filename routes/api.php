@@ -1,18 +1,14 @@
 <?php
 
-use App\Http\Controllers\Api\FranchiseController;
-use App\Http\Controllers\Api\InquiryController;
-use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/franchises', [FranchiseController::class, 'index']);
-Route::get('/franchises/{id}', [FranchiseController::class, 'show']);
+// API routes are disabled for now
+// Uncomment when API controllers are implemented
 
-Route::post('/inquiries', [InquiryController::class, 'store']);
-
-// Payment webhook
-Route::post('/payment/webhook', [PaymentController::class, 'webhook']);
+// Route::get('/franchises', [FranchiseController::class, 'index']);
+// Route::get('/franchises/{id}', [FranchiseController::class, 'show']);
+// Route::post('/inquiries', [InquiryController::class, 'store']);
 
 // Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
