@@ -20,6 +20,35 @@
                 <form method="POST" action="{{ route('register') }}" class="space-y-6">
                     @csrf
 
+                    <!-- CAPTCHA -->
+                    <div id="captcha-container" class="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <label class="block text-sm font-semibold text-gray-700">
+                                <i class="bi bi-shield mr-2 text-blue-600"></i>Security Check
+                            </label>
+                            <button type="button" id="refresh-captcha" class="text-sm text-blue-600 hover:text-blue-800">
+                                <i class="bi bi-arrow-repeat"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div id="captcha-question" class="font-medium text-gray-800">Loading...</div>
+                            <div class="flex-1">
+                                <input type="text" 
+                                       name="captcha" 
+                                       id="captcha" 
+                                       required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('captcha') border-red-500 @enderror" 
+                                       placeholder="Enter answer">
+                            </div>
+                        </div>
+                        @error('captcha')
+                            <p class="mt-2 text-sm text-red-600 flex items-center">
+                                <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
+                            </p>
+                        @enderror
+                        <input type="hidden" name="captcha_hash" id="captcha_hash">
+                    </div>
+
                     <!-- Two Column Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Name -->
@@ -216,5 +245,27 @@ function togglePassword(inputId, iconId) {
         toggleIcon.classList.add('bi-eye');
     }
 }
+
+// CAPTCHA functionality
+function loadCaptcha() {
+    fetch('/captcha/generate')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('captcha-question').textContent = data.question;
+            document.getElementById('captcha_hash').value = data.hash;
+        })
+        .catch(error => {
+            console.error('Error loading CAPTCHA:', error);
+            document.getElementById('captcha-question').textContent = 'Error loading CAPTCHA';
+        });
+}
+
+// Load CAPTCHA on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadCaptcha();
+    
+    // Refresh CAPTCHA on button click
+    document.getElementById('refresh-captcha').addEventListener('click', loadCaptcha);
+});
 </script>
 @endsection

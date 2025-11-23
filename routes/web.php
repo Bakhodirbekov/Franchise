@@ -74,3 +74,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// CAPTCHA Routes
+Route::get('/captcha/generate', [App\Http\Controllers\Auth\CaptchaController::class, 'generate'])->name('captcha.generate');
