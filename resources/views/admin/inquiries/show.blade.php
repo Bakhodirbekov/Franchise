@@ -128,10 +128,20 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Admin Notes</label>
-                                <textarea name="admin_note" rows="4" 
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Admin Notes (Internal Only)</label>
+                                <textarea name="admin_note" rows="3" 
                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                          placeholder="Add internal notes about this inquiry...">{{ old('admin_note', $inquiry->admin_note) }}</textarea>
+                                          placeholder="Add internal notes (not visible to user)...">{{ old('admin_note', $inquiry->admin_note) }}</textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Response to User (Visible to User)</label>
+                                <textarea name="admin_response" rows="4" 
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                          placeholder="Write a response that the user will see...">{{ old('admin_response', $inquiry->admin_response) }}</textarea>
+                                @if($inquiry->admin_response_at)
+                                    <p class="text-xs text-gray-500 mt-1">Last updated: {{ $inquiry->admin_response_at->format('M d, Y - h:i A') }}</p>
+                                @endif
                             </div>
 
                             <button type="submit" 

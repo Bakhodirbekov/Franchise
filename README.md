@@ -92,6 +92,9 @@ A modern Laravel-based franchise marketplace with admin management, user inquiri
 
 ## Quick Start
 
+admin = admin@example.com
+pass =  Password123!
+
 1. **Clone and install:**
 ```bash
 git clone <repository>

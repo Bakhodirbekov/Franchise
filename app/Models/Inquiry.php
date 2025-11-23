@@ -18,6 +18,12 @@ class Inquiry extends Model
         'message',
         'status',
         'admin_note',
+        'admin_response',
+        'admin_response_at',
+    ];
+
+    protected $casts = [
+        'admin_response_at' => 'datetime',
     ];
 
     protected $attributes = [
