@@ -59,6 +59,7 @@
                         <option value="">All Roles</option>
                         <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                         <option value="vendor" {{ request('role') == 'vendor' ? 'selected' : '' }}>Vendor</option>
+                        <option value="operator" {{ request('role') == 'operator' ? 'selected' : '' }}>Operator</option>
                         <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
                     </select>
                     
@@ -142,9 +143,11 @@
                                             class="text-sm border border-gray-300 rounded-lg px-3 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                                                 {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-800' : '' }}
                                                 {{ $user->role === 'vendor' ? 'bg-green-100 text-green-800' : '' }}
+                                                {{ $user->role === 'operator' ? 'bg-blue-100 text-blue-800' : '' }}
                                                 {{ $user->role === 'user' ? 'bg-gray-100 text-gray-800' : '' }}">
                                         <option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
                                         <option value="vendor" {{ $user->role === 'vendor' ? 'selected' : '' }}>Vendor</option>
+                                        <option value="operator" {{ $user->role === 'operator' ? 'selected' : '' }}>Operator</option>
                                         <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
                                     </select>
                                 </form>

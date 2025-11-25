@@ -49,6 +49,17 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
     
+    public function show($id)
+    {
+        $user = User::withCount(['inquiries', 'orders'])
+                  ->with(['inquiries' => function($query) {
+                      $query->latest()->limit(3);
+                  }])
+                  ->findOrFail($id);
+        
+        return response()->json($user);
+    }
+    
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -60,7 +71,7 @@ class UserController extends Controller
         }
         
         $request->validate([
-            'role' => 'required|in:user,vendor,admin',
+            'role' => 'required|in:user,vendor,admin,operator',
         ]);
         
         $user->update([

@@ -78,8 +78,11 @@
                         <span class="text-xs text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
                             {{ $stats['admin_users'] }} Admin
                         </span>
+                        <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                            {{ $stats['operator_users'] }} Operator
+                        </span>
                         <span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
-                            {{ $stats['total_users'] - $stats['admin_users'] }} Users
+                            {{ $stats['total_users'] - $stats['admin_users'] - $stats['operator_users'] }} Users
                         </span>
                     </div>
                 </div>

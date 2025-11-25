@@ -22,6 +22,7 @@ class DashboardController extends Controller
             'pending_inquiries' => Inquiry::where('status', 'new')->count(),
             'published_franchises' => Franchise::where('status', 'published')->count(),
             'admin_users' => User::where('role', 'admin')->count(),
+            'operator_users' => User::where('role', 'operator')->count(),
             'completed_orders' => Order::where('status', 'paid')->count(),
             'pending_orders' => Order::where('status', 'pending')->count(),
             'total_call_requests' => CallRequest::count(),

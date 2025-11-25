@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->role === 'vendor';
     }
+
+    public function isOperator()
+    {
+        return $this->role === 'operator';
+    }
 }

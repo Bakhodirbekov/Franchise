@@ -81,9 +81,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // Users Management
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
+
+// Operator Routes
+require __DIR__ . '/operator.php';
 
 require __DIR__ . '/auth.php';
 

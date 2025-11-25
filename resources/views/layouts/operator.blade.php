@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Admin Panel - DarkRock')</title>
-    <meta name="description" content="Admin Panel for DarkRock Franchise Management">
+    <title>@yield('title', 'Operator Panel - DarkRock')</title>
+    <meta name="description" content="Operator Panel for DarkRock Franchise Management">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -179,7 +179,7 @@
                         <img src="{{ asset('images/logo.png') }}" alt="DarkRock Logo" class="w-10 h-10 rounded-lg object-contain">
                         <div>
                             <span class="text-xl font-black text-white tracking-tight">DARK<span class="text-accent">ROCK</span></span>
-                            <p class="text-xs text-gray-400">ADMIN PANEL</p>
+                            <p class="text-xs text-gray-400">OPERATOR PANEL</p>
                         </div>
                     </div>
                 </div>
@@ -188,52 +188,24 @@
                 <nav class="flex-1 overflow-y-auto">
                     <ul class="space-y-1">
                         <li>
-                            <a href="{{ route('admin.dashboard') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.dashboard') ? 'active' : 'text-gray-300' }}">
+                            <a href="{{ route('operator.dashboard') }}" 
+                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('operator.dashboard') ? 'active' : 'text-gray-300' }}">
                                 <i class="bi bi-speedometer2 text-lg"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.franchises.index') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.franchises.*') ? 'active' : 'text-gray-300' }}">
-                                <i class="bi bi-shop text-lg"></i>
-                                <span>Franchises</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.categories.index') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.categories.*') ? 'active' : 'text-gray-300' }}">
-                                <i class="bi bi-tags text-lg"></i>
-                                <span>Categories</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.inquiries.index') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.inquiries.*') ? 'active' : 'text-gray-300' }}">
-                                <i class="bi bi-chat-dots text-lg"></i>
-                                <span>Inquiries</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.call-requests.index') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.call-requests.*') ? 'active' : 'text-gray-300' }}">
+                            <a href="{{ route('operator.call-requests.index') }}" 
+                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('operator.call-requests.*') ? 'active' : 'text-gray-300' }}">
                                 <i class="bi bi-telephone text-lg"></i>
                                 <span>Call Requests</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.users.index') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.users.*') ? 'active' : 'text-gray-300' }}">
-                                <i class="bi bi-people text-lg"></i>
-                                <span>Users</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('operator.dashboard') }}" 
-                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('operator.*') ? 'active' : 'text-gray-300' }}">
-                                <i class="bi bi-headset text-lg"></i>
-                                <span>Operator Panel</span>
+                            <a href="{{ route('operator.inquiries.index') }}" 
+                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('operator.inquiries.*') ? 'active' : 'text-gray-300' }}">
+                                <i class="bi bi-chat-dots text-lg"></i>
+                                <span>Inquiries</span>
                             </a>
                         </li>
                     </ul>
@@ -247,7 +219,7 @@
                         </div>
                         <div>
                             <p class="font-semibold text-white">{{ auth()->user()->name }}</p>
-                            <p class="text-xs text-gray-400">Administrator</p>
+                            <p class="text-xs text-gray-400">Operator</p>
                         </div>
                     </div>
                     <div class="mt-4">
@@ -269,7 +241,7 @@
             <header class="topbar sticky top-0 z-40">
                 <div class="flex justify-between items-center p-4">
                     <div class="flex items-center space-x-4">
-                        <h1 class="text-xl font-bold text-gray-900">@yield('header', 'Admin Panel')</h1>
+                        <h1 class="text-xl font-bold text-gray-900">@yield('header', 'Operator Panel')</h1>
                     </div>
                     <div class="flex items-center space-x-4">
                         <span class="text-sm text-gray-600">{{ now()->format('M d, Y - h:i A') }}</span>
