@@ -11,17 +11,13 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\InquiryController as AdminInquiryController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FranchiseImageController;
+use App\Http\Controllers\Admin\CallRequestController;
+use App\Http\Controllers\CallRequestController as PublicCallRequestController;
 use Illuminate\Support\Facades\Route;
 
-// Public Routes
+// Public Routes (No authentication required)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/franchises', [FranchiseController::class, 'index'])->name('franchises.index');
-Route::get('/franchises/{slug}', [FranchiseController::class, 'show'])->name('franchises.show');
-
-// Inquiry Route (with rate limiting)
-Route::post('/inquiries', [InquiryController::class, 'store'])
-    ->middleware('throttle:5,1')
-    ->name('inquiries.store');
 
 // Auth Routes (Breeze)
 Route::get('/dashboard', function () {
@@ -29,6 +25,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // These routes require authentication
+    Route::get('/franchises/{slug}', [FranchiseController::class, 'show'])->name('franchises.show');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -37,6 +35,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account.index');
     Route::get('/account/inquiries', [AccountController::class, 'inquiries'])->name('account.inquiries');
     Route::get('/account/orders', [AccountController::class, 'orders'])->name('account.orders');
+    
+    // Inquiry Route (with rate limiting)
+    Route::post('/inquiries', [InquiryController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('inquiries.store');
+        
+    // Call Request Route
+    Route::post('/call-requests', [PublicCallRequestController::class, 'store'])
+        ->name('call-requests.store');
 });
 
 // Admin Routes
@@ -48,6 +55,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/franchises', [AdminFranchiseController::class, 'index'])->name('admin.franchises.index');
     Route::get('/franchises/create', [AdminFranchiseController::class, 'create'])->name('admin.franchises.create');
     Route::post('/franchises', [AdminFranchiseController::class, 'store'])->name('admin.franchises.store');
+    Route::get('/franchises/{id}', [AdminFranchiseController::class, 'show'])->name('admin.franchises.show');
     Route::get('/franchises/{id}/edit', [AdminFranchiseController::class, 'edit'])->name('admin.franchises.edit');
     Route::put('/franchises/{id}', [AdminFranchiseController::class, 'update'])->name('admin.franchises.update');
     Route::delete('/franchises/{id}', [AdminFranchiseController::class, 'destroy'])->name('admin.franchises.destroy');
@@ -66,6 +74,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/inquiries', [AdminInquiryController::class, 'index'])->name('admin.inquiries.index');
     Route::get('/inquiries/{id}', [AdminInquiryController::class, 'show'])->name('admin.inquiries.show');
     Route::put('/inquiries/{id}', [AdminInquiryController::class, 'update'])->name('admin.inquiries.update');
+
+    // Call Requests Management
+    Route::get('/call-requests', [CallRequestController::class, 'index'])->name('admin.call-requests.index');
+    Route::put('/call-requests/{callRequest}/status', [CallRequestController::class, 'updateStatus'])->name('admin.call-requests.update-status');
 
     // Users Management
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');

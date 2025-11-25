@@ -191,6 +191,11 @@
                                                 title="Quick Inquiry">
                                             <i class="bi bi-chat-dots"></i>
                                         </button>
+                                        <button class="w-12 h-12 bg-gray-700 border border-gray-600 text-accent rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center"
+                                                onclick="showCallRequestModal({{ $franchise->id }}, '{{ addslashes($franchise->title) }}')"
+                                                title="Request a Call">
+                                            <i class="bi bi-telephone"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -277,6 +282,59 @@
     </div>
 </div>
 
+<!-- Call Request Modal -->
+<div id="callRequestModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <div class="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl max-w-md w-full mx-4">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-black text-white">Request a Call</h3>
+                <button onclick="closeCallRequestModal()" class="text-gray-400 hover:text-accent transition duration-200">
+                    <i class="bi bi-x-lg text-xl"></i>
+                </button>
+            </div>
+            
+            <form id="callRequestForm" method="POST" action="{{ route('call-requests.store') }}" class="space-y-4">
+                @csrf
+                <input type="hidden" name="franchise_id" id="callRequestFranchiseId">
+                <input type="hidden" name="franchise_name" id="callRequestFranchiseName">
+                
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Full Name *</label>
+                    <input type="text" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
+                           value="{{ auth()->user()?->name }}" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Phone Number *</label>
+                    <input type="tel" name="phone" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
+                           value="{{ auth()->user()?->phone }}" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Preferred Call Time</label>
+                    <select name="call_time" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200">
+                        <option value="">Any time</option>
+                        <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
+                        <option value="Afternoon (12PM - 5PM)">Afternoon (12PM - 5PM)</option>
+                        <option value="Evening (5PM - 8PM)">Evening (5PM - 8PM)</option>
+                    </select>
+                </div>
+                
+                <div class="flex space-x-3 pt-2">
+                    <button type="button" onclick="closeCallRequestModal()" 
+                            class="flex-1 bg-gray-800 border border-gray-700 text-gray-300 py-3 rounded-xl font-bold hover:bg-gray-700 transition duration-200">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="flex-1 gradient-accent text-gray-900 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
+                        Request Call
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
     function updateRangeValues() {
@@ -301,11 +359,56 @@
         document.getElementById('inquiryModal').classList.add('hidden');
     }
     
+    function showCallRequestModal(franchiseId, franchiseName) {
+        document.getElementById('callRequestFranchiseId').value = franchiseId;
+        document.getElementById('callRequestFranchiseName').value = franchiseName;
+        document.getElementById('callRequestModal').classList.remove('hidden');
+    }
+    
+    function closeCallRequestModal() {
+        document.getElementById('callRequestModal').classList.add('hidden');
+    }
+    
     // Close modal when clicking outside
     document.getElementById('inquiryModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeInquiryModal();
         }
+    });
+    
+    document.getElementById('callRequestModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeCallRequestModal();
+        }
+    });
+    
+    // Handle form submission with AJAX
+    document.getElementById('callRequestForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        const formData = new FormData(form);
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                closeCallRequestModal();
+                alert(data.message);
+            } else {
+                alert('Error submitting call request. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting call request. Please try again.');
+        });
     });
     
     // Initialize range values

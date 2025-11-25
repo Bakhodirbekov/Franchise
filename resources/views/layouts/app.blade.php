@@ -134,6 +134,10 @@
                                         class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-accent transition duration-200">
                                         <i class="bi bi-speedometer2 mr-2"></i>Admin Dashboard
                                     </a>
+                                    <a href="{{ route('admin.call-requests.index') }}"
+                                        class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-accent transition duration-200">
+                                        <i class="bi bi-telephone mr-2"></i>Call Requests
+                                    </a>
                                 @endif
                                 <hr class="my-1 border-gray-700">
                                 <form method="POST" action="{{ route('logout') }}">
@@ -190,6 +194,10 @@
                         <a href="{{ route('admin.dashboard') }}"
                             class="block py-2 text-gray-300 hover:text-accent font-semibold transition duration-200 {{ request()->routeIs('admin.*') ? 'text-accent' : '' }}">
                             <i class="bi bi-speedometer2 mr-2"></i>Admin Dashboard
+                        </a>
+                        <a href="{{ route('admin.call-requests.index') }}"
+                            class="block py-2 text-gray-300 hover:text-accent font-semibold transition duration-200">
+                            <i class="bi bi-telephone mr-2"></i>Call Requests
                         </a>
                     @endif
                     <div class="border-t border-gray-700 pt-3 mt-3">

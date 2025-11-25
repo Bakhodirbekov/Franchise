@@ -1,57 +1,57 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Manage Inquiries - Admin Panel')
 
+@section('header', 'Inquiries')
+
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Manage Inquiries</h1>
-                <p class="text-gray-600 mt-2">View and manage customer inquiries</p>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
-                    {{ $inquiries->where('status', 'new')->count() }} New
-                </span>
-            </div>
+<div class="py-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Manage Inquiries</h1>
+            <p class="text-gray-600 mt-1">View and manage customer inquiries</p>
         </div>
-
-        <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-blue-600">{{ $inquiries->total() }}</div>
-                <div class="text-sm text-gray-600">Total Inquiries</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-yellow-600">{{ $inquiries->where('status', 'new')->count() }}</div>
-                <div class="text-sm text-gray-600">New</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-blue-600">{{ $inquiries->where('status', 'contacted')->count() }}</div>
-                <div class="text-sm text-gray-600">Contacted</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-green-600">{{ $inquiries->where('status', 'closed')->count() }}</div>
-                <div class="text-sm text-gray-600">Closed</div>
-            </div>
+        <div class="flex items-center space-x-4">
+            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium">
+                {{ $inquiries->where('status', 'new')->count() }} New
+            </span>
         </div>
+    </div>
 
-        <!-- Inquiries Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">All Inquiries</h3>
-                    <div class="flex items-center space-x-4">
-                        <input type="text" placeholder="Search inquiries..." class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">All Status</option>
-                            <option value="new">New</option>
-                            <option value="contacted">Contacted</option>
-                            <option value="closed">Closed</option>
-                        </select>
-                    </div>
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-blue-600">{{ $inquiries->total() }}</div>
+            <div class="text-sm text-gray-600">Total Inquiries</div>
+        </div>
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-yellow-600">{{ $inquiries->where('status', 'new')->count() }}</div>
+            <div class="text-sm text-gray-600">New</div>
+        </div>
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-blue-600">{{ $inquiries->where('status', 'contacted')->count() }}</div>
+            <div class="text-sm text-gray-600">Contacted</div>
+        </div>
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-green-600">{{ $inquiries->where('status', 'closed')->count() }}</div>
+            <div class="text-sm text-gray-600">Closed</div>
+        </div>
+    </div>
+
+    <!-- Inquiries Table -->
+    <div class="table-container bg-white">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">All Inquiries</h3>
+                <div class="flex items-center space-x-4">
+                    <input type="text" placeholder="Search inquiries..." class="form-input">
+                    <select class="form-input">
+                        <option value="">All Status</option>
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="closed">Closed</option>
+                    </select>
                 </div>
             </div>
 
@@ -94,7 +94,7 @@
                                 <div class="text-sm text-gray-900 max-w-xs truncate">{{ $inquiry->message }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                <span class="badge 
                                     {{ $inquiry->status === 'new' ? 'bg-yellow-100 text-yellow-800' : '' }}
                                     {{ $inquiry->status === 'contacted' ? 'bg-blue-100 text-blue-800' : '' }}
                                     {{ $inquiry->status === 'closed' ? 'bg-green-100 text-green-800' : '' }}">

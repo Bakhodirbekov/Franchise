@@ -17,10 +17,12 @@ class FranchiseController extends Controller
             $query = Franchise::where('status', 'published')
                 ->with(['category', 'images']);
             
+            // Category filter
             if ($request->has('category') && $request->category) {
                 $query->where('category_id', $request->category);
             }
             
+            // Search filter
             if ($request->has('search') && $request->search) {
                 $query->where(function($q) use ($request) {
                     $q->where('title', 'like', '%' . $request->search . '%')
@@ -28,7 +30,34 @@ class FranchiseController extends Controller
                 });
             }
             
-            $franchises = $query->orderBy('created_at', 'desc')->paginate(12);
+            // Investment range filters
+            if ($request->has('investment_min') && $request->investment_min) {
+                $query->where('investment_min', '>=', $request->investment_min);
+            }
+            
+            if ($request->has('investment_max') && $request->investment_max) {
+                $query->where('investment_max', '<=', $request->investment_max);
+            }
+            
+            // Sort options
+            if ($request->has('sort')) {
+                switch ($request->sort) {
+                    case 'investment_low_high':
+                        $query->orderBy('investment_min', 'asc');
+                        break;
+                    case 'investment_high_low':
+                        $query->orderBy('investment_min', 'desc');
+                        break;
+                    case 'newest':
+                    default:
+                        $query->orderBy('created_at', 'desc');
+                        break;
+                }
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
+            
+            $franchises = $query->paginate(12);
             
             return view('franchises.index', compact('franchises', 'categories'));
 
@@ -45,6 +74,11 @@ class FranchiseController extends Controller
     
     public function show($slug)
     {
+        // Require authentication to view franchise details
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to view franchise details.');
+        }
+        
         try {
             Log::info("🔍 Looking for franchise with slug: {$slug}");
 

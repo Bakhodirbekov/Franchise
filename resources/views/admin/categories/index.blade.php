@@ -1,42 +1,44 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Manage Categories - Admin Panel')
 
+@section('header', 'Categories')
+
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Manage Categories</h1>
-                <p class="text-gray-600 mt-2">Organize franchises into categories</p>
+<div class="py-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Manage Categories</h1>
+            <p class="text-gray-600 mt-1">Organize franchises into categories</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Add Category Form -->
+        <div class="lg:col-span-1">
+            <div class="stat-card bg-white p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Add New Category</h3>
+                <form action="{{ route('admin.categories.store') }}" method="POST">
+                    @csrf
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
+                            <input type="text" name="name" required class="form-input w-full">
+                        </div>
+                        <button type="submit" class="btn-primary w-full">
+                            Add Category
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Add Category Form -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Add New Category</h3>
-                    <form action="{{ route('admin.categories.store') }}" method="POST">
-                        @csrf
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
-                                <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Enter category name">
-                            </div>
-                            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition duration-200">
-                                Add Category
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Categories List -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-200">
+        <!-- Categories List -->
+        <div class="lg:col-span-2">
+            <div class="table-container bg-white">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-semibold text-gray-900">All Categories ({{ $categories->count() }})</h3>
                     </div>
                     
@@ -101,13 +103,13 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
-                        <input type="text" name="name" id="editCategoryName" required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                        <input type="text" name="name" id="editCategoryName" required class="form-input w-full">
                     </div>
                     <div class="flex space-x-3 pt-2">
-                        <button type="button" onclick="closeEditModal()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition duration-200">
+                        <button type="button" onclick="closeEditModal()" class="btn-secondary flex-1">
                             Cancel
                         </button>
-                        <button type="submit" class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-medium hover:from-blue-600 hover:to-purple-700 transition duration-200">
+                        <button type="submit" class="btn-primary flex-1">
                             Update Category
                         </button>
                     </div>
@@ -128,7 +130,7 @@ function closeEditModal() {
     document.getElementById('editCategoryModal').classList.add('hidden');
 }
 
-// Close modal when clicking outside - setTimeout OLIB TASHLANDI
+// Close modal when clicking outside
 document.getElementById('editCategoryModal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeEditModal();

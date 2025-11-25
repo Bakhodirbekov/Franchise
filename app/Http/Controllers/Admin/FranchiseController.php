@@ -91,6 +91,12 @@ class FranchiseController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $franchise = Franchise::with(['category', 'creator', 'images'])->findOrFail($id);
+        return view('admin.franchises.show', compact('franchise'));
+    }
+
     public function edit($id)
     {
         $franchise = Franchise::with('category', 'images')->findOrFail($id);

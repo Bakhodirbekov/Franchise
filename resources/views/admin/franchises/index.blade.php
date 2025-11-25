@@ -1,58 +1,58 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Manage Franchises - Admin Panel')
 
+@section('header', 'Franchises')
+
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900">Manage Franchises</h1>
-                <p class="text-gray-600 mt-2">Create and manage franchise opportunities</p>
-            </div>
-            <a href="{{ route('admin.franchises.create') }}"
-                class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition duration-200 flex items-center space-x-2">
-                <i class="bi bi-plus-lg"></i>
-                <span>Add New Franchise</span>
-            </a>
+<div class="py-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Manage Franchises</h1>
+            <p class="text-gray-600 mt-1">Create and manage franchise opportunities</p>
         </div>
+        <a href="{{ route('admin.franchises.create') }}"
+            class="btn-primary flex items-center space-x-2">
+            <i class="bi bi-plus-lg"></i>
+            <span>Add New</span>
+        </a>
+    </div>
 
-        <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-blue-600">{{ $franchises->total() }}</div>
-                <div class="text-sm text-gray-600">Total Franchises</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-green-600">{{ $franchises->where('status', 'published')->count() }}</div>
-                <div class="text-sm text-gray-600">Published</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-yellow-600">{{ $franchises->where('status', 'draft')->count() }}</div>
-                <div class="text-sm text-gray-600">Draft</div>
-            </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-                <div class="text-2xl font-bold text-purple-600">{{ $categories->count() }}</div>
-                <div class="text-sm text-gray-600">Categories</div>
-            </div>
+    <!-- Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-blue-600">{{ $franchises->total() }}</div>
+            <div class="text-sm text-gray-600">Total Franchises</div>
         </div>
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-green-600">{{ $franchises->where('status', 'published')->count() }}</div>
+            <div class="text-sm text-gray-600">Published</div>
+        </div>
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-yellow-600">{{ $franchises->where('status', 'draft')->count() }}</div>
+            <div class="text-sm text-gray-600">Draft</div>
+        </div>
+        <div class="stat-card bg-white p-4">
+            <div class="text-2xl font-bold text-purple-600">{{ $categories->count() }}</div>
+            <div class="text-sm text-gray-600">Categories</div>
+        </div>
+    </div>
 
-        <!-- Franchises Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">All Franchises</h3>
-                    <div class="flex items-center space-x-4">
-                        <input type="text" placeholder="Search franchises..."
-                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <select
-                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">All Status</option>
-                            <option value="published">Published</option>
-                            <option value="draft">Draft</option>
-                        </select>
-                    </div>
+    <!-- Franchises Table -->
+    <div class="table-container bg-white">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-900">All Franchises</h3>
+                <div class="flex items-center space-x-4">
+                    <input type="text" placeholder="Search franchises..."
+                        class="form-input">
+                    <select
+                        class="form-input">
+                        <option value="">All Status</option>
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                    </select>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                                    <span class="badge bg-blue-100 text-blue-800">
                                         {{ $franchise->category->name }}
                                     </span>
                                 </td>
@@ -115,7 +115,7 @@
                                     <div class="text-sm text-gray-500">to ${{ number_format($franchise->investment_max) }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    <span class="badge 
                                         {{ $franchise->status === 'published' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
                                         {{ ucfirst($franchise->status) }}
                                     </span>
@@ -160,7 +160,7 @@
                                     <h3 class="text-lg font-semibold text-gray-900 mb-2">No franchises found</h3>
                                     <p class="text-gray-600 mb-4">Get started by creating your first franchise opportunity.</p>
                                     <a href="{{ route('admin.franchises.create') }}"
-                                       class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition duration-200">
+                                       class="btn-primary">
                                         Create Franchise
                                     </a>
                                 </td>
