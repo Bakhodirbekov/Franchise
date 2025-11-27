@@ -230,6 +230,13 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('admin.roles.create') }}" 
+                               class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('admin.roles.*') ? 'active' : 'text-gray-300' }}">
+                                <i class="bi bi-person-badge text-lg"></i>
+                                <span>Create Role</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('operator.dashboard') }}" 
                                class="sidebar-nav-item flex items-center space-x-3 p-3 {{ request()->routeIs('operator.*') ? 'active' : 'text-gray-300' }}">
                                 <i class="bi bi-headset text-lg"></i>

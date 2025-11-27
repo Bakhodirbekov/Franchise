@@ -13,7 +13,7 @@ class CreateTestUser extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-test-user {--admin : Create as admin user}';
+    protected $signature = 'app:create-test-user {--role= : Specify the role (user, vendor, admin, operator)}';
 
     /**
      * The console command description.
@@ -31,11 +31,24 @@ class CreateTestUser extends Command
         $email = $this->ask('Enter user email', 'test@example.com');
         $password = $this->secret('Enter password', 'password');
         
+        // Ask for role if not provided via option
+        $role = $this->option('role');
+        if (!$role) {
+            $role = $this->choice('Select role', ['user', 'vendor', 'admin', 'operator'], 0);
+        }
+        
+        // Validate role
+        $validRoles = ['user', 'vendor', 'admin', 'operator'];
+        if (!in_array($role, $validRoles)) {
+            $this->error('Invalid role. Valid roles are: ' . implode(', ', $validRoles));
+            return 1;
+        }
+        
         $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
-            'role' => $this->option('admin') ? 'admin' : 'user',
+            'role' => $role,
             'email_verified_at' => now(),
         ]);
         

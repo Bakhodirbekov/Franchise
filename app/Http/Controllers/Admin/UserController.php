@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -74,12 +75,19 @@ class UserController extends Controller
             'role' => 'required|in:user,vendor,admin,operator',
         ]);
         
+        $oldRole = $user->role;
         $user->update([
             'role' => $request->role,
         ]);
         
+        // If the user whose role was changed is currently logged in, refresh their session
+        if (Auth::check() && Auth::id() === $user->id) {
+            // Refresh the user instance in the session by re-retrieving from database
+            Auth::setUser(User::find($user->id));
+        }
+        
         return redirect()->route('admin.users.index')
-            ->with('success', 'User role updated successfully!');
+            ->with('success', 'User role updated successfully from ' . $oldRole . ' to ' . $request->role . '!');
     }
     
     public function destroy($id)

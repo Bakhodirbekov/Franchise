@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
@@ -84,10 +84,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/users/{id}', [UserController::class, 'show'])->name('admin.users.show');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    
+    // Roles Management
+    Route::get('/roles/create', [App\Http\Controllers\Admin\RoleController::class, 'create'])->name('admin.roles.create');
+    Route::post('/roles', [App\Http\Controllers\Admin\RoleController::class, 'store'])->name('admin.roles.store');
 });
 
-// Operator Routes
-require __DIR__ . '/operator.php';
+// Operator Routes - Operators and admins can access
+Route::middleware(['auth', 'role:operator,admin'])->prefix('operator')->name('operator.')->group(function () {
+    // Operator routes will be loaded from the separate file
+    require __DIR__ . '/operator.php';
+});
 
 require __DIR__ . '/auth.php';
 
