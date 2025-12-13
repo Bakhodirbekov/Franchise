@@ -129,55 +129,55 @@
 
                 <!-- Franchise Cards -->
                 @if($franchises->count() > 0)
-                    <div class="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                    <div class="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                         @foreach($franchises as $franchise)
                             <div class="bg-gray-800 border border-gray-700 rounded-2xl card-hover overflow-hidden hover:border-accent hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-300 flex flex-col h-full">
                                 <!-- Image -->
-                                <div class="relative h-40 sm:h-44 md:h-48 bg-gray-700 overflow-hidden flex-shrink-0">
+                                <div class="relative w-full aspect-video bg-gray-700 overflow-hidden flex-shrink-0">
                                     @if($franchise->images->count() > 0)
                                         <img src="{{ Storage::url($franchise->images->first()->path) }}" 
                                              alt="{{ $franchise->title }}"
                                              class="w-full h-full object-cover transition duration-300 hover:scale-105">
                                     @else
                                         <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
-                                            <i class="bi bi-building text-gray-600 text-4xl"></i>
+                                            <i class="bi bi-building text-gray-600 text-3xl sm:text-4xl"></i>
                                         </div>
                                     @endif
-                                    <div class="absolute top-4 left-4">
-                                        <span class="bg-gray-900/90 backdrop-blur text-accent border border-accent/50 px-3 py-1 rounded-full text-xs font-bold">
+                                    <div class="absolute top-2 sm:top-3 left-2 sm:left-4">
+                                        <span class="bg-gray-900/90 backdrop-blur text-accent border border-accent/50 px-2 sm:px-3 py-1 rounded-full text-xs font-bold">
                                             {{ $franchise->category->name }}
                                         </span>
                                     </div>
                                 </div>
 
                                 <!-- Content -->
-                                <div class="p-3 sm:p-4 md:p-6 flex flex-col flex-1">
-                                    <h3 class="text-sm sm:text-base md:text-lg font-black text-white mb-2 line-clamp-2">
+                                <div class="p-3 sm:p-4 flex flex-col flex-1">
+                                    <h3 class="text-xs sm:text-sm md:text-base font-black text-white mb-1.5 sm:mb-2 line-clamp-2">
                                         {{ $franchise->title }}
                                     </h3>
                                     
-                                    <p class="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 flex-shrink-0">
+                                    <p class="text-gray-400 text-xs mb-2 sm:mb-3 line-clamp-2 flex-shrink-0">
                                         {{ $franchise->short_description }}
                                     </p>
 
                                     <!-- Investment Info -->
-                                    <div class="space-y-1 sm:space-y-2 mb-3 sm:mb-4 flex-shrink-0">
+                                    <div class="space-y-0.5 sm:space-y-1 mb-2 sm:mb-3 flex-shrink-0 text-xs">
                                         @auth
                                             @if(auth()->user()->role === 'admin')
-                                                <div class="flex justify-between items-center text-xs sm:text-sm">
+                                                <div class="flex justify-between items-center">
                                                     <span class="text-gray-500">Инвестиции:</span>
                                                     <span class="font-bold text-accent">
-                                                        ${{ number_format($franchise->investment_min) }}+
+                                                        ${{ number_format($franchise->investment_min) }}
                                                     </span>
                                                 </div>
-                                                <div class="flex justify-between items-center text-xs sm:text-sm">
+                                                <div class="flex justify-between items-center">
                                                     <span class="text-gray-500">Роялти:</span>
                                                     <span class="font-bold text-white">{{ $franchise->royalty }}%</span>
                                                 </div>
                                             @endif
                                         @endauth
                                         @if($franchise->territory)
-                                        <div class="flex justify-between items-center text-xs sm:text-sm">
+                                        <div class="flex justify-between items-center">
                                             <span class="text-gray-500">Территория:</span>
                                             <span class="font-semibold text-white">{{ $franchise->territory }}</span>
                                         </div>
@@ -185,18 +185,18 @@
                                     </div>
 
                                     <!-- CTA Buttons -->
-                                    <div class="mt-auto pt-3 sm:pt-4 border-t border-gray-700">
-                                        <div class="flex space-x-2 sm:space-x-3">
+                                    <div class="mt-auto pt-2 sm:pt-3 border-t border-gray-700">
+                                        <div class="flex gap-1.5 sm:gap-2">
                                             <a href="{{ route('franchises.show', $franchise->slug) }}" 
-                                               class="flex-1 gradient-accent text-gray-900 text-center py-2 sm:py-2.5 md:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm md:text-base font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
+                                               class="flex-1 gradient-accent text-gray-900 text-center py-1.5 sm:py-2 px-2 rounded-lg text-xs sm:text-sm font-bold hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
                                                 Подробнее
                                             </a>
-                                            <button class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700 border border-gray-600 text-accent rounded-lg sm:rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center flex-shrink-0"
+                                            <button class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-700 border border-gray-600 text-accent rounded-lg hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center flex-shrink-0"
                                                     onclick="showInquiryModal({{ $franchise->id }})"
                                                     title="Быстрый запрос">
-                                                <i class="bi bi-chat-dots text-sm sm:text-base"></i>
+                                                <i class="bi bi-chat-dots text-xs sm:text-sm"></i>
                                             </button>
-                                            <button class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700 border border-gray-600 text-accent rounded-lg sm:rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center flex-shrink-0"
+                                            <button class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-700 border border-gray-600 text-accent rounded-lg hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center flex-shrink-0"
                                                     onclick="showCallRequestModal({{ $franchise->id }}, '{{ addslashes($franchise->title) }}')"
                                                     title="Заказать звонок">
                                                 <i class="bi bi-telephone text-sm sm:text-base"></i>
