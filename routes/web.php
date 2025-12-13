@@ -36,6 +36,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/inquiries', [AccountController::class, 'inquiries'])->name('account.inquiries');
     Route::get('/account/orders', [AccountController::class, 'orders'])->name('account.orders');
     
+    // Mobile User Interface
+    Route::get('/mobile/user-interface', function () {
+        return view('mobile.user-interface', [
+            'user' => auth()->user(),
+        ]);
+    })->name('mobile.user-interface');
+    
+    // Responsive Test Page
+    Route::get('/responsive-test', function () {
+        return view('responsive-test');
+    })->name('responsive.test');
+    
     // Inquiry Route (with rate limiting)
     Route::post('/inquiries', [InquiryController::class, 'store'])
         ->middleware('throttle:5,1')

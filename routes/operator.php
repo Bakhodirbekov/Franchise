@@ -14,5 +14,5 @@ Route::put('/call-requests/{callRequest}/status', [CallRequestController::class,
 
 // Inquiries Management
 Route::get('/inquiries', [InquiryController::class, 'index'])->name('inquiries.index');
-Route::get('/inquiries/{id}', [InquiryController::class, 'show'])->name('inquiries.show');
-Route::put('/inquiries/{id}', [InquiryController::class, 'update'])->name('inquiries.update');
+Route::get('/inquiries/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
+Route::put('/inquiries/{inquiry}', [InquiryController::class, 'update'])->name('inquiries.update');

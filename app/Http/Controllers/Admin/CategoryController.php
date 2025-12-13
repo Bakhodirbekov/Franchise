@@ -19,11 +19,13 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:categories',
+            'icon' => 'required|string|max:255',
         ]);
         
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
+            'icon' => $request->icon,
         ]);
         
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully');
@@ -35,11 +37,13 @@ class CategoryController extends Controller
         
         $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'icon' => 'required|string|max:255',
         ]);
         
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
+            'icon' => $request->icon,
         ]);
         
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully');

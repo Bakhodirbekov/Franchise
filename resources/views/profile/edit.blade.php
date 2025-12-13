@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Profile Settings')
+@section('title', 'Параметры Профиля')
 
 @section('content')
 <div class="min-h-screen bg-gray-900 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-black text-white mb-2">Profile Settings</h1>
-            <p class="text-gray-400">Manage your account information and preferences</p>
+            <h1 class="text-3xl font-black text-white mb-2">Параметры Профиля</h1>
+            <p class="text-gray-400">Управляйте информацией аккаунта и предпочтениями</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -20,25 +20,25 @@
                            class="profile-nav-link active flex items-center px-4 py-3 text-sm font-bold rounded-xl transition duration-200"
                            onclick="showSection('profile-info', this)">
                             <i class="bi bi-person mr-3"></i>
-                            Profile Information
+                            Личная Информация
                         </a>
                         <a href="#password" 
                            class="profile-nav-link flex items-center px-4 py-3 text-sm font-bold rounded-xl transition duration-200"
                            onclick="showSection('password', this)">
                             <i class="bi bi-shield-lock mr-3"></i>
-                            Change Password
+                            Изменить Пароль
                         </a>
                         <a href="#delete-account" 
                            class="profile-nav-link flex items-center px-4 py-3 text-sm font-bold rounded-xl transition duration-200"
                            onclick="showSection('delete-account', this)">
                             <i class="bi bi-trash mr-3"></i>
-                            Delete Account
+                            Удалить Аккаунт
                         </a>
                         <div class="border-t border-gray-600 my-2"></div>
                         <a href="{{ route('account.index') }}" 
                            class="flex items-center px-4 py-3 text-sm font-semibold text-gray-300 hover:bg-gray-700 rounded-xl transition duration-200">
                             <i class="bi bi-arrow-left mr-3"></i>
-                            Back to Dashboard
+                            Вернуться на дошку
                         </a>
                     </nav>
                 </div>
@@ -49,8 +49,8 @@
                 <!-- Profile Information Section -->
                 <div id="section-profile-info" class="profile-section bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-8">
                     <div class="mb-6">
-                        <h2 class="text-2xl font-black text-white mb-2">Profile Information</h2>
-                        <p class="text-gray-400">Update your account's profile information and email address.</p>
+                        <h2 class="text-2xl font-black text-white mb-2">Личная Информация</h2>
+                        <p class="text-gray-400">Обновите информацию профиля вашего аккаунта и электронным адресом.</p>
                     </div>
                     @include('profile.partials.update-profile-information-form')
                 </div>
@@ -58,8 +58,8 @@
                 <!-- Password Section -->
                 <div id="section-password" class="profile-section hidden bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-8">
                     <div class="mb-6">
-                        <h2 class="text-2xl font-black text-white mb-2">Change Password</h2>
-                        <p class="text-gray-400">Ensure your account is using a long, random password to stay secure.</p>
+                        <h2 class="text-2xl font-black text-white mb-2">Изменить Пароль</h2>
+                        <p class="text-gray-400">Обеспечите, что ваш аккаунт использует длинный случайный пароль для остала безопасный.</p>
                     </div>
                     @include('profile.partials.update-password-form')
                 </div>
@@ -67,8 +67,8 @@
                 <!-- Delete Account Section -->
                 <div id="section-delete-account" class="profile-section hidden bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-8">
                     <div class="mb-6">
-                        <h2 class="text-2xl font-black text-white mb-2">Delete Account</h2>
-                        <p class="text-gray-400">Permanently delete your account and all associated data.</p>
+                        <h2 class="text-2xl font-black text-white mb-2">Удалить Аккаунт</h2>
+                        <p class="text-gray-400">Постоянно удалите ваш аккаунт и все связанные данные.</p>
                     </div>
                     @include('profile.partials.delete-user-form')
                 </div>

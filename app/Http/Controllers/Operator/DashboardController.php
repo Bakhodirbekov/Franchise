@@ -30,10 +30,18 @@ class DashboardController extends Controller
             ->get();
 
         // Get recent inquiries
-        $recentInquiries = Inquiry::latest()
+        $recentInquiries = Inquiry::with(['franchise.category'])
+            ->latest()
             ->take(5)
             ->get();
+        
+        // Get contacted inquiries (operator conversations with clients)
+        $contactedInquiries = Inquiry::with(['franchise.category'])
+            ->where('status', 'contacted')
+            ->latest()
+            ->take(10)
+            ->get();
 
-        return view('operator.dashboard', compact('stats', 'recentCallRequests', 'recentInquiries'));
+        return view('operator.dashboard', compact('stats', 'recentCallRequests', 'recentInquiries', 'contactedInquiries'));
     }
 }

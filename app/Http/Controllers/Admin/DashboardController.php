@@ -45,8 +45,15 @@ class DashboardController extends Controller
             ->latest()
             ->take(5)
             ->get();
+        
+        // Get contacted inquiries (operator conversations with clients)
+        $contactedInquiries = Inquiry::with(['franchise.category'])
+            ->where('status', 'contacted')
+            ->latest()
+            ->take(10)
+            ->get();
             
-        return view('admin.dashboard', compact('stats', 'franchiseData', 'inquiryData', 'orderData', 'userData', 'trafficData', 'recentInquiries', 'recentFranchises'));
+        return view('admin.dashboard', compact('stats', 'franchiseData', 'inquiryData', 'orderData', 'userData', 'trafficData', 'recentInquiries', 'recentFranchises', 'contactedInquiries'));
     }
     
     private function getFranchiseData()

@@ -214,5 +214,101 @@
             </div>
         </div>
     </div>
+    
+    <!-- Contacted Clients Section -->
+    <div class="mt-8">
+        <div class="stat-card bg-white p-6">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900">My Contacted Clients</h3>
+                    <p class="text-sm text-gray-600 mt-1">Clients you have contacted - track their investment intent</p>
+                </div>
+                <a href="{{ route('operator.inquiries.index') }}?status=contacted" class="text-sm text-blue-600 hover:text-blue-800">
+                    View All
+                </a>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Franchise Interest</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contact</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Investment Range</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($contactedInquiries as $inquiry)
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                                        {{ strtoupper(substr($inquiry->name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $inquiry->name }}</div>
+                                        <div class="text-xs text-gray-500">{{ $inquiry->email }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4">
+                                @if($inquiry->franchise)
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-2">
+                                            <i class="bi bi-shop text-blue-600 text-sm"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">{{ $inquiry->franchise->title }}</div>
+                                            <div class="text-xs text-gray-500">{{ $inquiry->franchise->category->name }}</div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <span class="text-sm text-gray-500">General Inquiry</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $inquiry->phone }}</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                @if($inquiry->franchise)
+                                    <div class="text-sm">
+                                        <div class="font-semibold text-green-600">
+                                            ${{ number_format($inquiry->franchise->investment_min) }} - 
+                                            ${{ number_format($inquiry->franchise->investment_max) }}
+                                        </div>
+                                        <div class="text-xs text-gray-500">Royalty: {{ $inquiry->franchise->royalty }}%</div>
+                                    </div>
+                                @else
+                                    <span class="text-sm text-gray-500">-</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $inquiry->created_at ? $inquiry->created_at->format('M d, Y') : 'N/A' }}
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <a href="{{ route('operator.inquiries.show', $inquiry->id) }}" class="text-blue-600 hover:text-blue-800">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="px-4 py-8 text-center">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="bi bi-chat-dots text-gray-400 text-2xl"></i>
+                                </div>
+                                <p class="text-gray-500">No contacted clients yet</p>
+                                <p class="text-xs text-gray-400 mt-1">Contact clients from inquiries to see them here</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

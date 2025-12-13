@@ -13,6 +13,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
+        'icon',
     ];
 
     // Auto-generate slug when creating category

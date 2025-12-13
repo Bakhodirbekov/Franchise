@@ -26,6 +26,39 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
                             <input type="text" name="name" required class="form-input w-full">
                         </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Icon (Bootstrap Icons)</label>
+                            <select name="icon" required class="form-input w-full" id="iconSelect" onchange="updateIconPreview('iconPreview', this.value)">
+                                <option value="bi-tag">🏷️ Tag (Default)</option>
+                                <option value="bi-shop">🏪 Shop</option>
+                                <option value="bi-cup-straw">🥤 Food & Beverage</option>
+                                <option value="bi-phone">📱 Technology</option>
+                                <option value="bi-house">🏠 Real Estate</option>
+                                <option value="bi-car-front">🚗 Automotive</option>
+                                <option value="bi-heart-pulse">❤️ Health & Fitness</option>
+                                <option value="bi-mortarboard">🎓 Education</option>
+                                <option value="bi-scissors">✂️ Beauty & Salon</option>
+                                <option value="bi-brush">🎨 Services</option>
+                                <option value="bi-currency-dollar">💰 Finance</option>
+                                <option value="bi-box-seam">📦 Retail</option>
+                                <option value="bi-building">🏢 Business</option>
+                                <option value="bi-laptop">💻 IT & Software</option>
+                                <option value="bi-cart">🛒 E-commerce</option>
+                                <option value="bi-people">👥 Consulting</option>
+                                <option value="bi-trophy">🏆 Sports</option>
+                                <option value="bi-brightness-high">☀️ Energy</option>
+                                <option value="bi-globe">🌍 Travel</option>
+                                <option value="bi-shield-check">🛡️ Security</option>
+                            </select>
+                            <div class="mt-2 flex items-center space-x-2 text-sm text-gray-600">
+                                <span>Preview:</span>
+                                <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                    <i id="iconPreview" class="bi bi-tag text-white text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <button type="submit" class="btn-primary w-full">
                             Add Category
                         </button>
@@ -48,16 +81,16 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-xl flex items-center justify-center">
-                                        <i class="bi bi-tag text-white"></i>
+                                        <i class="bi {{ $category->icon ?? 'bi-tag' }} text-white"></i>
                                     </div>
                                     <div>
                                         <h4 class="text-lg font-semibold text-gray-900">{{ $category->name }}</h4>
                                         <p class="text-sm text-gray-600">{{ $category->franchises_count }} franchises</p>
-                                        <p class="text-xs text-gray-500">Slug: {{ $category->slug }}</p>
+                                        <p class="text-xs text-gray-500">Slug: {{ $category->slug }} • Icon: {{ $category->icon ?? 'bi-tag' }}</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <button onclick="editCategory({{ $category->id }}, '{{ $category->name }}')" class="text-green-600 hover:text-green-700 transition duration-200" title="Edit">
+                                    <button onclick="editCategory({{ $category->id }}, '{{ $category->name }}', '{{ $category->icon ?? 'bi-tag' }}')" class="text-green-600 hover:text-green-700 transition duration-200" title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </button>
                                     <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="inline">
@@ -105,6 +138,39 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Category Name</label>
                         <input type="text" name="name" id="editCategoryName" required class="form-input w-full">
                     </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Icon (Bootstrap Icons)</label>
+                        <select name="icon" id="editCategoryIcon" required class="form-input w-full" onchange="updateIconPreview('editIconPreview', this.value)">
+                            <option value="bi-tag">🏷️ Tag (Default)</option>
+                            <option value="bi-shop">🏪 Shop</option>
+                            <option value="bi-cup-straw">🥤 Food & Beverage</option>
+                            <option value="bi-phone">📱 Technology</option>
+                            <option value="bi-house">🏠 Real Estate</option>
+                            <option value="bi-car-front">🚗 Automotive</option>
+                            <option value="bi-heart-pulse">❤️ Health & Fitness</option>
+                            <option value="bi-mortarboard">🎓 Education</option>
+                            <option value="bi-scissors">✂️ Beauty & Salon</option>
+                            <option value="bi-brush">🎨 Services</option>
+                            <option value="bi-currency-dollar">💰 Finance</option>
+                            <option value="bi-box-seam">📦 Retail</option>
+                            <option value="bi-building">🏢 Business</option>
+                            <option value="bi-laptop">💻 IT & Software</option>
+                            <option value="bi-cart">🛒 E-commerce</option>
+                            <option value="bi-people">👥 Consulting</option>
+                            <option value="bi-trophy">🏆 Sports</option>
+                            <option value="bi-brightness-high">☀️ Energy</option>
+                            <option value="bi-globe">🌍 Travel</option>
+                            <option value="bi-shield-check">🛡️ Security</option>
+                        </select>
+                        <div class="mt-2 flex items-center space-x-2 text-sm text-gray-600">
+                            <span>Preview:</span>
+                            <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                <i id="editIconPreview" class="bi bi-tag text-white text-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="flex space-x-3 pt-2">
                         <button type="button" onclick="closeEditModal()" class="btn-secondary flex-1">
                             Cancel
@@ -120,8 +186,15 @@
 </div>
 
 <script>
-function editCategory(id, name) {
+function updateIconPreview(previewId, iconClass) {
+    const previewElement = document.getElementById(previewId);
+    previewElement.className = 'bi ' + iconClass + ' text-white text-lg';
+}
+
+function editCategory(id, name, icon) {
     document.getElementById('editCategoryName').value = name;
+    document.getElementById('editCategoryIcon').value = icon || 'bi-tag';
+    updateIconPreview('editIconPreview', icon || 'bi-tag');
     document.getElementById('editCategoryForm').action = `/admin/categories/${id}`;
     document.getElementById('editCategoryModal').classList.remove('hidden');
 }

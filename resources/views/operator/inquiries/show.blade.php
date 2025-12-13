@@ -26,7 +26,9 @@
                 <div class="flex justify-between items-start mb-6">
                     <div>
                         <h2 class="text-xl font-bold text-gray-900">{{ $inquiry->subject }}</h2>
-                        <p class="text-gray-600 mt-1">{{ $inquiry->created_at->format('M d, Y h:i A') }}</p>
+                        <p class="text-gray-600 mt-1">
+                            {{ $inquiry->created_at ? $inquiry->created_at->format('M d, Y h:i A') : 'N/A' }}
+                        </p>
                     </div>
                     <span class="badge 
                         {{ $inquiry->status === 'new' ? 'bg-yellow-100 text-yellow-800' : '' }}
@@ -45,8 +47,8 @@
                     @if($inquiry->franchise)
                         <div>
                             <h3 class="font-medium text-gray-900 mb-2">Franchise Interest</h3>
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <div class="flex items-center">
+                            <div class="bg-gray-50 p-4 rounded-lg space-y-3">
+                                <div class="flex items-center pb-3 border-b border-gray-200">
                                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                                         <i class="bi bi-shop text-blue-600"></i>
                                     </div>
@@ -55,6 +57,30 @@
                                         <p class="text-sm text-gray-600">{{ $inquiry->franchise->category->name }}</p>
                                     </div>
                                 </div>
+                                
+                                <!-- Financial Information for Operator -->
+                                <div class="grid grid-cols-2 gap-3 pt-2">
+                                    <div class="bg-white p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Investment Range</p>
+                                        <p class="text-sm font-bold text-gray-900">
+                                            ${{ number_format($inquiry->franchise->investment_min) }} - 
+                                            ${{ number_format($inquiry->franchise->investment_max) }}
+                                        </p>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">Royalty Fee</p>
+                                        <p class="text-sm font-bold text-gray-900">
+                                            {{ $inquiry->franchise->royalty }}%
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                @if($inquiry->franchise->territory)
+                                <div class="bg-white p-3 rounded-lg mt-2">
+                                    <p class="text-xs text-gray-500 mb-1">Territory</p>
+                                    <p class="text-sm font-semibold text-gray-900">{{ $inquiry->franchise->territory }}</p>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     @endif

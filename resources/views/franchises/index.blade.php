@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Franchise Opportunities - DarkRock')
+@section('title', 'Возможности Франшиз - DarkRock')
 
 @section('content')
 <div class="min-h-screen bg-gray-900 py-8">
@@ -8,10 +8,10 @@
         <!-- Header -->
         <div class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
-                Franchise <span class="text-accent">Opportunities</span>
+                Возможности <span class="text-accent">Франшиз</span>
             </h1>
             <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-                Discover your perfect business opportunity from our curated selection of rock-solid franchise models
+                Открыте вашу идеальную бизнес-овность из нашего подборанных процессов франшиз
             </p>
         </div>
 
@@ -20,21 +20,21 @@
             <div class="lg:w-1/4">
                 <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-6 sticky top-24">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-black text-white">Filters</h3>
+                        <h3 class="text-lg font-black text-white">Фильтры</h3>
                         <button onclick="resetFilters()" class="text-sm text-accent hover:text-orange-400 font-bold">
-                            Reset All
+                            Очистить Все
                         </button>
                     </div>
                     
                     <form id="filterForm" method="GET" action="{{ route('franchises.index') }}" class="space-y-6">
                         <!-- Search -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-300 mb-2">Search</label>
+                            <label class="block text-sm font-bold text-gray-300 mb-2">Поиск</label>
                             <div class="relative">
                                 <input type="text" 
                                        name="search" 
                                        value="{{ request('search') }}"
-                                       placeholder="Find franchises..."
+                                       placeholder="Найдите франшизы..."
                                        class="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200 placeholder-gray-500">
                                 <i class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
                             </div>
@@ -42,9 +42,9 @@
 
                         <!-- Category -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-300 mb-2">Category</label>
+                            <label class="block text-sm font-bold text-gray-300 mb-2">Категория</label>
                             <select name="category" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200">
-                                <option value="">All Categories</option>
+                                <option value="">Все Категории</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
@@ -56,7 +56,7 @@
                         <!-- Investment Range -->
                         <div>
                             <label class="block text-sm font-bold text-gray-300 mb-2">
-                                Investment Range
+                                Диапазон Инвестиций
                             </label>
                             <div class="space-y-4">
                                 <div>
@@ -86,16 +86,16 @@
 
                         <!-- Sort -->
                         <div>
-                            <label class="block text-sm font-bold text-gray-300 mb-2">Sort By</label>
+                            <label class="block text-sm font-bold text-gray-300 mb-2">Сортировка</label>
                             <select name="sort" class="w-full px-4 py-3 bg-gray-900 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200">
-                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
-                                <option value="investment_low_high" {{ request('sort') == 'investment_low_high' ? 'selected' : '' }}>Investment: Low to High</option>
-                                <option value="investment_high_low" {{ request('sort') == 'investment_high_low' ? 'selected' : '' }}>Investment: High to Low</option>
+                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Сначала новые</option>
+                                <option value="investment_low_high" {{ request('sort') == 'investment_low_high' ? 'selected' : '' }}>Инвестиции: от низких к высоким</option>
+                                <option value="investment_high_low" {{ request('sort') == 'investment_high_low' ? 'selected' : '' }}>Инвестиции: от высоких к низким</option>
                             </select>
                         </div>
 
                         <button type="submit" class="w-full gradient-accent text-gray-900 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                            Apply Filters
+                            Применить фильтры
                         </button>
                     </form>
                 </div>
@@ -108,11 +108,11 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-xl font-black text-white">
-                                {{ $franchises->total() }} Franchise{{ $franchises->total() !== 1 ? 's' : '' }} Found
+                                {{ $franchises->total() }} франшиз{{ $franchises->total() !== 1 ? 'ы' : 'а' }} найдено
                             </h2>
                             @if(request()->anyFilled(['search', 'category', 'investment_min', 'investment_max']))
                                 <p class="text-gray-400 text-sm mt-1">
-                                    Filtered results
+                                    Фильтрованные результаты
                                     @if(request('search')) • "{{ request('search') }}" @endif
                                     @if(request('category')) • {{ $categories->find(request('category'))->name ?? '' }} @endif
                                 </p>
@@ -121,7 +121,7 @@
                         
                         <div class="flex items-center space-x-4">
                             <span class="text-sm text-gray-500">
-                                Page {{ $franchises->currentPage() }} of {{ $franchises->lastPage() }}
+                                Страница {{ $franchises->currentPage() }} из {{ $franchises->lastPage() }}
                             </span>
                         </div>
                     </div>
@@ -129,11 +129,11 @@
 
                 <!-- Franchise Cards -->
                 @if($franchises->count() > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                         @foreach($franchises as $franchise)
-                            <div class="bg-gray-800 border border-gray-700 rounded-2xl card-hover overflow-hidden hover:border-accent hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-300">
+                            <div class="bg-gray-800 border border-gray-700 rounded-2xl card-hover overflow-hidden hover:border-accent hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-300 flex flex-col h-full">
                                 <!-- Image -->
-                                <div class="relative h-48 bg-gray-700 overflow-hidden">
+                                <div class="relative h-40 sm:h-44 md:h-48 bg-gray-700 overflow-hidden flex-shrink-0">
                                     @if($franchise->images->count() > 0)
                                         <img src="{{ Storage::url($franchise->images->first()->path) }}" 
                                              alt="{{ $franchise->title }}"
@@ -151,51 +151,57 @@
                                 </div>
 
                                 <!-- Content -->
-                                <div class="p-6">
-                                    <h3 class="text-lg font-black text-white mb-2 line-clamp-2">
+                                <div class="p-3 sm:p-4 md:p-6 flex flex-col flex-1">
+                                    <h3 class="text-sm sm:text-base md:text-lg font-black text-white mb-2 line-clamp-2">
                                         {{ $franchise->title }}
                                     </h3>
                                     
-                                    <p class="text-gray-400 text-sm mb-4 line-clamp-2">
+                                    <p class="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 flex-shrink-0">
                                         {{ $franchise->short_description }}
                                     </p>
 
                                     <!-- Investment Info -->
-                                    <div class="space-y-2 mb-4 bg-gray-900/50 p-3 rounded-lg border border-gray-700">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-sm text-gray-400">Investment:</span>
-                                            <span class="font-bold text-accent">
-                                                ${{ number_format($franchise->investment_min) }} - ${{ number_format($franchise->investment_max) }}
-                                            </span>
-                                        </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-sm text-gray-400">Royalty:</span>
-                                            <span class="font-bold text-white">{{ $franchise->royalty }}%</span>
-                                        </div>
+                                    <div class="space-y-1 sm:space-y-2 mb-3 sm:mb-4 flex-shrink-0">
+                                        @auth
+                                            @if(auth()->user()->role === 'admin')
+                                                <div class="flex justify-between items-center text-xs sm:text-sm">
+                                                    <span class="text-gray-500">Инвестиции:</span>
+                                                    <span class="font-bold text-accent">
+                                                        ${{ number_format($franchise->investment_min) }}+
+                                                    </span>
+                                                </div>
+                                                <div class="flex justify-between items-center text-xs sm:text-sm">
+                                                    <span class="text-gray-500">Роялти:</span>
+                                                    <span class="font-bold text-white">{{ $franchise->royalty }}%</span>
+                                                </div>
+                                            @endif
+                                        @endauth
                                         @if($franchise->territory)
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-sm text-gray-400">Territory:</span>
-                                            <span class="font-semibold text-white text-sm">{{ $franchise->territory }}</span>
+                                        <div class="flex justify-between items-center text-xs sm:text-sm">
+                                            <span class="text-gray-500">Территория:</span>
+                                            <span class="font-semibold text-white">{{ $franchise->territory }}</span>
                                         </div>
                                         @endif
                                     </div>
 
                                     <!-- CTA Buttons -->
-                                    <div class="flex space-x-3">
-                                        <a href="{{ route('franchises.show', $franchise->slug) }}" 
-                                           class="flex-1 gradient-accent text-gray-900 text-center py-2.5 px-4 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                                            View Details
-                                        </a>
-                                        <button class="w-12 h-12 bg-gray-700 border border-gray-600 text-accent rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center"
-                                                onclick="showInquiryModal({{ $franchise->id }})"
-                                                title="Quick Inquiry">
-                                            <i class="bi bi-chat-dots"></i>
-                                        </button>
-                                        <button class="w-12 h-12 bg-gray-700 border border-gray-600 text-accent rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center"
-                                                onclick="showCallRequestModal({{ $franchise->id }}, '{{ addslashes($franchise->title) }}')"
-                                                title="Request a Call">
-                                            <i class="bi bi-telephone"></i>
-                                        </button>
+                                    <div class="mt-auto pt-3 sm:pt-4 border-t border-gray-700">
+                                        <div class="flex space-x-2 sm:space-x-3">
+                                            <a href="{{ route('franchises.show', $franchise->slug) }}" 
+                                               class="flex-1 gradient-accent text-gray-900 text-center py-2 sm:py-2.5 md:py-3 px-2 sm:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm md:text-base font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
+                                                Подробнее
+                                            </a>
+                                            <button class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700 border border-gray-600 text-accent rounded-lg sm:rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center flex-shrink-0"
+                                                    onclick="showInquiryModal({{ $franchise->id }})"
+                                                    title="Быстрый запрос">
+                                                <i class="bi bi-chat-dots text-sm sm:text-base"></i>
+                                            </button>
+                                            <button class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700 border border-gray-600 text-accent rounded-lg sm:rounded-xl hover:bg-gray-600 hover:border-accent transition duration-200 flex items-center justify-center flex-shrink-0"
+                                                    onclick="showCallRequestModal({{ $franchise->id }}, '{{ addslashes($franchise->title) }}')"
+                                                    title="Заказать звонок">
+                                                <i class="bi bi-telephone text-sm sm:text-base"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -212,13 +218,13 @@
                         <div class="w-24 h-24 bg-gray-700 border border-gray-600 rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="bi bi-search text-gray-500 text-3xl"></i>
                         </div>
-                        <h3 class="text-2xl font-black text-white mb-2">No franchises found</h3>
+                        <h3 class="text-2xl font-black text-white mb-2">Франшизы не найдены</h3>
                         <p class="text-gray-400 mb-6 max-w-md mx-auto">
-                            We couldn't find any franchises matching your criteria. Try adjusting your filters or browse all available opportunities.
+                            Мы не смогли найти франшизы, соответствующие вашим критериям. Попробуйте изменить фильтры или просмотреть все доступные предложения.
                         </p>
                         <a href="{{ route('franchises.index') }}" 
                            class="gradient-accent text-gray-900 px-8 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200 inline-flex items-center space-x-2">
-                            <span>Browse All Franchises</span>
+                            <span>Смотреть все франшизы</span>
                             <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -233,7 +239,7 @@
     <div class="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl max-w-md w-full mx-4">
         <div class="p-6">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-black text-white">Send Inquiry</h3>
+                <h3 class="text-lg font-black text-white">Отправить запрос</h3>
                 <button onclick="closeInquiryModal()" class="text-gray-400 hover:text-accent transition duration-200">
                     <i class="bi bi-x-lg text-xl"></i>
                 </button>
@@ -244,37 +250,37 @@
                 <input type="hidden" name="franchise_id" id="modalFranchiseId">
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Full Name *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Полное имя *</label>
                     <input type="text" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->name }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Email Address *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Email *</label>
                     <input type="email" name="email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->email }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Phone Number *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Телефон *</label>
                     <input type="tel" name="phone" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->phone }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Message</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Сообщение</label>
                     <textarea name="message" rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
-                              placeholder="Tell us about your interest in this franchise opportunity..."></textarea>
+                              placeholder="Расскажите нам о вашем интересе к этой франшизе..."></textarea>
                 </div>
                 
                 <div class="flex space-x-3 pt-2">
                     <button type="button" onclick="closeInquiryModal()" 
                             class="flex-1 bg-gray-800 border border-gray-700 text-gray-300 py-3 rounded-xl font-bold hover:bg-gray-700 transition duration-200">
-                        Cancel
+                        Отмена
                     </button>
                     <button type="submit" 
                             class="flex-1 gradient-accent text-gray-900 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                        Send Inquiry
+                        Отправить
                     </button>
                 </div>
             </form>
@@ -287,7 +293,7 @@
     <div class="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl max-w-md w-full mx-4">
         <div class="p-6">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-black text-white">Request a Call</h3>
+                <h3 class="text-lg font-black text-white">Заказать звонок</h3>
                 <button onclick="closeCallRequestModal()" class="text-gray-400 hover:text-accent transition duration-200">
                     <i class="bi bi-x-lg text-xl"></i>
                 </button>
@@ -299,35 +305,35 @@
                 <input type="hidden" name="franchise_name" id="callRequestFranchiseName">
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Full Name *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Полное имя *</label>
                     <input type="text" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->name }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Phone Number *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Телефон *</label>
                     <input type="tel" name="phone" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->phone }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Preferred Call Time</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Предпочтительное время звонка</label>
                     <select name="call_time" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200">
-                        <option value="">Any time</option>
-                        <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
-                        <option value="Afternoon (12PM - 5PM)">Afternoon (12PM - 5PM)</option>
-                        <option value="Evening (5PM - 8PM)">Evening (5PM - 8PM)</option>
+                        <option value="">Любое время</option>
+                        <option value="Morning (9AM - 12PM)">Утро (9:00 - 12:00)</option>
+                        <option value="Afternoon (12PM - 5PM)">День (12:00 - 17:00)</option>
+                        <option value="Evening (5PM - 8PM)">Вечер (17:00 - 20:00)</option>
                     </select>
                 </div>
                 
                 <div class="flex space-x-3 pt-2">
                     <button type="button" onclick="closeCallRequestModal()" 
                             class="flex-1 bg-gray-800 border border-gray-700 text-gray-300 py-3 rounded-xl font-bold hover:bg-gray-700 transition duration-200">
-                        Cancel
+                        Отмена
                     </button>
                     <button type="submit" 
                             class="flex-1 gradient-accent text-gray-900 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                        Request Call
+                        Заказать
                     </button>
                 </div>
             </form>

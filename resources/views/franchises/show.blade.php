@@ -11,13 +11,13 @@
                 <li class="inline-flex items-center">
                     <a href="{{ route('home') }}" class="text-gray-400 hover:text-accent inline-flex items-center">
                         <i class="bi bi-house-door mr-2"></i>
-                        Home
+                        Главная
                     </a>
                 </li>
                 <li>
                     <div class="flex items-center">
                         <i class="bi bi-chevron-right text-gray-600 mx-2"></i>
-                        <a href="{{ route('franchises.index') }}" class="text-gray-400 hover:text-accent">Franchises</a>
+                        <a href="{{ route('franchises.index') }}" class="text-gray-400 hover:text-accent">Франшизы</a>
                     </div>
                 </li>
                 <li aria-current="page">
@@ -46,7 +46,7 @@
                             </div>
                             @if($franchise->images->count() > 1)
                                 <div class="absolute bottom-4 right-4 bg-black bg-opacity-75 text-white px-3 py-1 rounded-full text-sm">
-                                    <i class="bi bi-images mr-1"></i> {{ $franchise->images->count() }} Photos
+                                    <i class="bi bi-images mr-1"></i> {{ $franchise->images->count() }} фото
                                 </div>
                             @endif
                         </div>
@@ -64,7 +64,7 @@
                     <p class="text-xl text-gray-300 mb-6">{{ $franchise->short_description }}</p>
                     
                     <div class="prose max-w-none">
-                        <h2 class="text-2xl font-black text-white mb-4">About This Franchise</h2>
+                        <h2 class="text-2xl font-black text-white mb-4">О франшизе</h2>
                         <div class="text-gray-400 leading-relaxed whitespace-pre-line">{{ $franchise->description }}</div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-8">
                     <h2 class="text-2xl font-black text-white mb-6 flex items-center">
                         <i class="bi bi-check-circle text-accent mr-3"></i>
-                        Requirements
+                        Требования
                     </h2>
                     <ul class="space-y-3">
                         @foreach($franchise->requirements as $requirement)
@@ -90,7 +90,7 @@
                 <!-- Related Franchises -->
                 @if($relatedFranchises->count() > 0)
                 <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-black text-white mb-6">Similar Opportunities</h2>
+                    <h2 class="text-2xl font-black text-white mb-6">Похожие предложения</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         @foreach($relatedFranchises as $related)
                             <a href="{{ route('franchises.show', $related->slug) }}" 
@@ -127,36 +127,41 @@
                 <div class="sticky top-24 space-y-6">
                     <!-- Investment Details -->
                     <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-6">
-                        <h3 class="text-xl font-black text-white mb-6">Investment Details</h3>
+                        <h3 class="text-xl font-black text-white mb-6">Детали инвестиций</h3>
                         
                         <div class="space-y-4">
-                            <div class="flex justify-between items-start pb-4 border-b border-gray-700">
-                                <div>
-                                    <p class="text-sm text-gray-400 mb-1">Initial Investment</p>
-                                    <p class="text-2xl font-black text-white">
-                                        ${{ number_format($franchise->investment_min) }}
-                                    </p>
-                                    <p class="text-sm text-gray-300">to ${{ number_format($franchise->investment_max) }}</p>
-                                </div>
-                                <div class="bg-accent/10 border border-accent p-2 rounded-lg">
-                                    <i class="bi bi-cash-stack text-accent text-xl"></i>
-                                </div>
-                            </div>
+                            @auth
+                                @if(auth()->user()->role === 'admin')
+                                    <!-- Цены видны только админам -->
+                                    <div class="flex justify-between items-start pb-4 border-b border-gray-700">
+                                        <div>
+                                            <p class="text-sm text-gray-400 mb-1">Начальные инвестиции</p>
+                                            <p class="text-2xl font-black text-white">
+                                                ${{ number_format($franchise->investment_min) }}
+                                            </p>
+                                            <p class="text-sm text-gray-300">до ${{ number_format($franchise->investment_max) }}</p>
+                                        </div>
+                                        <div class="bg-accent/10 border border-accent p-2 rounded-lg">
+                                            <i class="bi bi-cash-stack text-accent text-xl"></i>
+                                        </div>
+                                    </div>
 
-                            <div class="flex justify-between items-center pb-4 border-b border-gray-700">
-                                <div>
-                                    <p class="text-sm text-gray-400 mb-1">Royalty Fee</p>
-                                    <p class="text-xl font-black text-white">{{ $franchise->royalty }}%</p>
-                                </div>
-                                <div class="bg-accent/10 border border-accent p-2 rounded-lg">
-                                    <i class="bi bi-percent text-accent text-xl"></i>
-                                </div>
-                            </div>
+                                    <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                                        <div>
+                                            <p class="text-sm text-gray-400 mb-1">Роялти</p>
+                                            <p class="text-xl font-black text-white">{{ $franchise->royalty }}%</p>
+                                        </div>
+                                        <div class="bg-accent/10 border border-accent p-2 rounded-lg">
+                                            <i class="bi bi-percent text-accent text-xl"></i>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endauth
 
                             @if($franchise->territory)
                             <div class="flex justify-between items-center pb-4 border-b border-gray-700">
                                 <div>
-                                    <p class="text-sm text-gray-400 mb-1">Territory</p>
+                                    <p class="text-sm text-gray-400 mb-1">Территория</p>
                                     <p class="text-base font-bold text-white">{{ $franchise->territory }}</p>
                                 </div>
                                 <div class="bg-accent/10 border border-accent p-2 rounded-lg">
@@ -166,7 +171,7 @@
                             @endif
 
                             <div class="pt-2">
-                                <p class="text-xs text-gray-500 mb-1">Category</p>
+                                <p class="text-xs text-gray-500 mb-1">Категория</p>
                                 <span class="inline-block bg-gray-900 border border-gray-700 text-accent px-3 py-1 rounded-full text-sm font-bold">
                                     {{ $franchise->category->name }}
                                 </span>
@@ -176,47 +181,47 @@
 
                     <!-- Contact Form -->
                     <div class="gradient-darkrock border border-gray-700 rounded-2xl shadow-sm p-6 text-white">
-                        <h3 class="text-xl font-black mb-4">Interested in this franchise?</h3>
-                        <p class="text-gray-300 text-sm mb-6">Send us an inquiry and we'll get back to you within 24 hours.</p>
+                        <h3 class="text-xl font-black mb-4">Интересует эта франшиза?</h3>
+                        <p class="text-gray-300 text-sm mb-6">Отправьте запрос и мы свяжемся с вами в течение 24 часов.</p>
                         
                         <form method="POST" action="{{ route('inquiries.store') }}" class="space-y-4">
                             @csrf
                             <input type="hidden" name="franchise_id" value="{{ $franchise->id }}">
                             
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-1">Full Name *</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-1">Полное имя *</label>
                                 <input type="text" name="name" value="{{ auth()->user()?->name }}" 
                                        class="w-full px-4 py-3 rounded-xl border-0 bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-accent" required>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-1">Email Address *</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-1">Email *</label>
                                 <input type="email" name="email" value="{{ auth()->user()?->email }}" 
                                        class="w-full px-4 py-3 rounded-xl border-0 bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-accent" required>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-1">Phone Number *</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-1">Телефон *</label>
                                 <input type="tel" name="phone" value="{{ auth()->user()?->phone }}" 
                                        class="w-full px-4 py-3 rounded-xl border-0 bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-accent" required>
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-bold text-gray-300 mb-1">Message</label>
+                                <label class="block text-sm font-bold text-gray-300 mb-1">Сообщение</label>
                                 <textarea name="message" rows="3" 
                                           class="w-full px-4 py-3 rounded-xl border-0 bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-accent"
-                                          placeholder="Tell us about your interest..."></textarea>
+                                          placeholder="Расскажите нам о вашем интересе..."></textarea>
                             </div>
                             
                             <button type="submit" 
                                     class="w-full gradient-accent text-gray-900 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                                <i class="bi bi-send mr-2"></i>Send Inquiry
+                                <i class="bi bi-send mr-2"></i>Отправить запрос
                             </button>
                             
                             <button type="button" 
                                     onclick="showCallRequestModal({{ $franchise->id }}, '{{ addslashes($franchise->title) }}')"
-                                    class="w-full bg-gray-800 border border-gray-700 text-white py-3 rounded-xl font-bold hover:bg-gray-700 transition duration-200 flex items-center justify-center">
-                                <i class="bi bi-telephone mr-2"></i>Request a Call
+                                    class="w-full bg-gray-800 border border-gray-700 text-white py-3 rounded-xl font-bold hover:bg-gray-700 transition duration-200 flex items-center justify-center mt-3">
+                                <i class="bi bi-telephone mr-2"></i>Заказать звонок
                             </button>
                         </form>
                     </div>
@@ -225,7 +230,7 @@
                     <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-6">
                         <div class="flex items-center text-sm text-gray-400 mb-3">
                             <i class="bi bi-person text-gray-500 mr-2"></i>
-                            Posted by <span class="font-bold text-white ml-1">{{ $franchise->creator->name }}</span>
+                            Опубликовал <span class="font-bold text-white ml-1">{{ $franchise->creator->name }}</span>
                         </div>
                         <div class="flex items-center text-sm text-gray-400">
                             <i class="bi bi-calendar text-gray-500 mr-2"></i>
@@ -235,12 +240,12 @@
                     
                     <!-- Company Contact Info -->
                     <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-6">
-                        <h3 class="text-lg font-black text-white mb-3">Company Contact</h3>
-                        <p class="text-gray-400 text-sm mb-4">For immediate assistance, call our direct line:</p>
+                        <h3 class="text-lg font-black text-white mb-3">Контакт компании</h3>
+                        <p class="text-gray-400 text-sm mb-4">Для немедленной помощи позвоните по номеру:</p>
                         <div class="flex items-center justify-between bg-gray-900 p-4 rounded-xl">
                             <span class="font-bold text-accent">+998 87 811 14 44</span>
                             <a href="tel:+998878111444" class="gradient-accent text-gray-900 px-4 py-2 rounded-lg font-bold hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                                <i class="bi bi-telephone mr-2"></i>Call Now
+                                <i class="bi bi-telephone mr-2"></i>Позвонить
                             </a>
                         </div>
                     </div>
@@ -255,7 +260,7 @@
     <div class="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl max-w-md w-full mx-4">
         <div class="p-6">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-black text-white">Request a Call</h3>
+                <h3 class="text-lg font-black text-white">Заказать звонок</h3>
                 <button onclick="closeCallRequestModal()" class="text-gray-400 hover:text-accent transition duration-200">
                     <i class="bi bi-x-lg text-xl"></i>
                 </button>
@@ -267,35 +272,35 @@
                 <input type="hidden" name="franchise_name" id="callRequestFranchiseName">
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Full Name *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Полное имя *</label>
                     <input type="text" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->name }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Phone Number *</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Телефон *</label>
                     <input type="tel" name="phone" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200"
                            value="{{ auth()->user()?->phone }}" required>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-300 mb-1">Preferred Call Time</label>
+                    <label class="block text-sm font-bold text-gray-300 mb-1">Предпочтительное время звонка</label>
                     <select name="call_time" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-accent focus:border-accent transition duration-200">
-                        <option value="">Any time</option>
-                        <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
-                        <option value="Afternoon (12PM - 5PM)">Afternoon (12PM - 5PM)</option>
-                        <option value="Evening (5PM - 8PM)">Evening (5PM - 8PM)</option>
+                        <option value="">Любое время</option>
+                        <option value="Morning (9AM - 12PM)">Утро (9:00 - 12:00)</option>
+                        <option value="Afternoon (12PM - 5PM)">День (12:00 - 17:00)</option>
+                        <option value="Evening (5PM - 8PM)">Вечер (17:00 - 20:00)</option>
                     </select>
                 </div>
                 
                 <div class="flex space-x-3 pt-2">
                     <button type="button" onclick="closeCallRequestModal()" 
                             class="flex-1 bg-gray-800 border border-gray-700 text-gray-300 py-3 rounded-xl font-bold hover:bg-gray-700 transition duration-200">
-                        Cancel
+                        Отмена
                     </button>
                     <button type="submit" 
                             class="flex-1 gradient-accent text-gray-900 py-3 rounded-xl font-black hover:shadow-lg hover:shadow-orange-500/50 transition duration-200">
-                        Request Call
+                        Заказать
                     </button>
                 </div>
             </form>
