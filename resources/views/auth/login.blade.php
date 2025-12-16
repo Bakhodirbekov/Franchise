@@ -10,8 +10,8 @@
                     <i class="bi bi-shop text-white text-3xl"></i>
                 </div>
             </a>
-            <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-            <p class="text-gray-600">Sign in to access your account</p>
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Добро пожаловать!</h2>
+            <p class="text-gray-600">Войдите в свой аккаунт</p>
         </div>
 
         <!-- Login Card -->
@@ -37,10 +37,10 @@
                     <div id="captcha-container" class="mb-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
                         <div class="flex items-center justify-between mb-3">
                             <label class="block text-sm font-semibold text-gray-700">
-                                <i class="bi bi-shield mr-2 text-blue-600"></i>Security Check
+                                <i class="bi bi-shield mr-2 text-blue-600"></i>Проверка безопасности
                             </label>
                             <button type="button" id="refresh-captcha" class="text-sm text-blue-600 hover:text-blue-800">
-                                <i class="bi bi-arrow-repeat"></i> Refresh
+                                <i class="bi bi-arrow-repeat"></i> Обновить
                             </button>
                         </div>
                         <div class="flex items-center space-x-3">
@@ -51,7 +51,7 @@
                                        id="captcha" 
                                        required
                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('captcha') border-red-500 @enderror" 
-                                       placeholder="Enter answer">
+                                       placeholder="Введите ответ">
                             </div>
                         </div>
                         @error('captcha')
@@ -65,7 +65,7 @@
                     <!-- Email Address -->
                     <div>
                         <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="bi bi-envelope mr-2 text-blue-600"></i>Email Address
+                            <i class="bi bi-envelope mr-2 text-blue-600"></i>Адрес электронной почты
                         </label>
                         <input id="email" 
                                type="email" 
@@ -75,7 +75,7 @@
                                autofocus 
                                autocomplete="username"
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 @error('email') border-red-500 @enderror"
-                               placeholder="your@email.com">
+                               placeholder="example@email.com">
                         @error('email')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <i class="bi bi-exclamation-circle mr-1"></i>{{ $message }}
@@ -86,7 +86,7 @@
                     <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="bi bi-lock mr-2 text-blue-600"></i>Password
+                            <i class="bi bi-lock mr-2 text-blue-600"></i>Пароль
                         </label>
                         <div class="relative">
                             <input id="password" 
@@ -114,12 +114,12 @@
                                    type="checkbox" 
                                    name="remember"
                                    class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 w-4 h-4">
-                            <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                            <span class="ml-2 text-sm text-gray-600">Запомнить меня</span>
                         </label>
 
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="text-sm font-medium text-blue-600 hover:text-blue-700 transition duration-200">
-                                Forgot password?
+                                Забыли пароль?
                             </a>
                         @endif
                     </div>
@@ -127,7 +127,7 @@
                     <!-- Submit Button -->
                     <button type="submit" 
                             class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                        <i class="bi bi-box-arrow-in-right mr-2"></i>Sign In
+                        <i class="bi bi-box-arrow-in-right mr-2"></i>Войти
                     </button>
                 </form>
             </div>
@@ -135,9 +135,9 @@
             <!-- Register Link -->
             <div class="px-8 py-6 bg-gray-50 border-t border-gray-200">
                 <p class="text-center text-sm text-gray-600">
-                    Don't have an account?
+                    Нет аккаунта?
                     <a href="{{ route('register') }}" class="font-semibold text-blue-600 hover:text-blue-700 transition duration-200">
-                        Create Account <i class="bi bi-arrow-right ml-1"></i>
+                        Создать аккаунт <i class="bi bi-arrow-right ml-1"></i>
                     </a>
                 </p>
             </div>
@@ -146,7 +146,7 @@
         <!-- Back to Home -->
         <div class="text-center mt-6">
             <a href="{{ route('home') }}" class="text-sm text-gray-600 hover:text-gray-900 transition duration-200">
-                <i class="bi bi-arrow-left mr-2"></i>Back to Homepage
+                <i class="bi bi-arrow-left mr-2"></i>На главную
             </a>
         </div>
     </div>

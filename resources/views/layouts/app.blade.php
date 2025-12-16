@@ -237,6 +237,12 @@
                                 <i class="bi bi-speedometer2 mr-2"></i>Админ
                             </a>
                         @endif
+                        <form method="POST" action="{{ route('logout') }}" class="mt-3 pt-3 border-t border-gray-700">
+                            @csrf
+                            <button type="submit" class="block w-full text-left py-2.5 text-red-400 hover:text-red-300 font-semibold text-sm">
+                                <i class="bi bi-box-arrow-right mr-2"></i>Выйти
+                            </button>
+                        </form>
                     @else
                         <div class="border-t border-gray-700 pt-2 mt-2 space-y-2">
                             <a href="{{ route('login') }}" class="block w-full text-center bg-gray-700 text-gray-300 py-2 px-3 rounded text-sm font-semibold hover:bg-gray-600 transition">

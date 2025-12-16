@@ -86,40 +86,6 @@
                     </ul>
                 </div>
                 @endif
-
-                <!-- Related Franchises -->
-                @if($relatedFranchises->count() > 0)
-                <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-black text-white mb-6">Похожие предложения</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        @foreach($relatedFranchises as $related)
-                            <a href="{{ route('franchises.show', $related->slug) }}" 
-                               class="group border border-gray-700 rounded-xl p-4 hover:shadow-lg hover:border-accent transition duration-200 bg-gray-900/50">
-                                <div class="flex gap-4">
-                                    @if($related->images->count() > 0)
-                                        <img src="{{ Storage::url($related->images->first()->path) }}" 
-                                             alt="{{ $related->title }}"
-                                             class="w-20 h-20 object-cover rounded-lg flex-shrink-0">
-                                    @else
-                                        <div class="w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <i class="bi bi-building text-gray-600"></i>
-                                        </div>
-                                    @endif
-                                    <div class="flex-1 min-w-0">
-                                        <h3 class="font-black text-white group-hover:text-accent transition duration-200 line-clamp-1">
-                                            {{ $related->title }}
-                                        </h3>
-                                        <p class="text-sm text-gray-400 line-clamp-2 mb-2">{{ $related->short_description }}</p>
-                                        <p class="text-sm font-bold text-accent">
-                                            ${{ number_format($related->investment_min) }}+
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
             </div>
 
             <!-- Sidebar -->
